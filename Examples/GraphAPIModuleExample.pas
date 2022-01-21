@@ -13,12 +13,12 @@ begin
   // Вызов процедуры draw() для функции sin(x) зелёным цветом.
   FastPascal.drawSinFunction(FastPascal.Green);
   
-  // Вызов процедуры draw() для функции sin(x).
+  // Вызов процедуры draw() для функции cos(x).
   FastPascal.drawCosFunction(FastPascal.DarkBlue);
   
-  // Вызов процедуры draw() для функции sin(x).
+  // Вызов процедуры draw() для функции tg(x).
   FastPascal.drawTanFunction(FastPascal.DarkGreen);
   
-  // Вызов процедуры draw() для функции sin(x).
+  // Вызов процедуры draw() для функции ctg(x).
   FastPascal.drawCotanFunction(FastPascal.Magenta);
 end.
