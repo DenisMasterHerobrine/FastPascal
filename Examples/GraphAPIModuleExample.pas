@@ -13,12 +13,12 @@ begin
   // Вызов процедуры draw() для функции sin(x) зелёным цветом.
   FastGraph.drawSinFunction(FastGraph.Green);
   
-  // Вызов процедуры draw() для функции sin(x).
+  // Вызов процедуры draw() для функции cos(x).
   FastGraph.drawCosFunction(FastGraph.DarkBlue);
   
-  // Вызов процедуры draw() для функции sin(x).
+  // Вызов процедуры draw() для функции tg(x).
   FastGraph.drawTanFunction(FastGraph.DarkGreen);
   
-  // Вызов процедуры draw() для функции sin(x).
+  // Вызов процедуры draw() для функции ctg(x).
   FastGraph.drawCotanFunction(FastGraph.Magenta);
 end.
