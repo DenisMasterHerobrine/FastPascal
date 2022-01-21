@@ -1,28 +1,15 @@
 ﻿unit FastPascal;
-uses GraphABC;
 
 // FastPascal Unit Library.
 // Licensed under MIT License.
 // @author Denis Kalashnikov (DenisMasterHerobrine)
 // https://github.com/DenisMasterHerobrine/FastPascal
 
-// TODO: Сортировка массива по возрастанию и убыванию
 // TODO: Решение квадратных уравнений.
 // TODO: Графики функций со встраиваемой функцией и системой координат.
 
 var Delimiter: string := ' ';
-
-    // Module: GraphAPI Color Map Library
-    Red: System.Drawing.Color := rgb(163, 11, 3);
-    Yellow: System.Drawing.Color := rgb(235, 231, 7);
-    Green: System.Drawing.Color := rgb(23, 191, 26);
-    Blue: System.Drawing.Color := rgb(12, 165, 207);
-    Pink: System.Drawing.Color := rgb(250, 125, 227);
-    Magenta: System.Drawing.Color := rgb(207, 12, 207);
-    DarkGreen: System.Drawing.Color := rgb(6, 99, 8);
-    DarkBlue: System.Drawing.Color := rgb(4, 118, 135);
-    LightRed: System.Drawing.Color := rgb(230, 165, 165);
-    Black: System.Drawing.Color := rgb(0, 0, 0);
+    TestString: string := '/*TEMPLATE_STRING_FOR_TESTING_PURPOSES!!!*/';
     
 // Module: Unified Constants
 const tinyArrSize = 10;
@@ -31,6 +18,11 @@ const mediumArrSize = 1000;
 const hugeArrSize = 10000;
 const extremeArrSize = 100000;
 const ultimateArrSize = 1000000;
+
+const glasn_RU = 'АОУИЫЭЕЁЮЯаоуиыэеёюя';
+const soglasn_RU = 'БВГДЖЗЙКЛМНПРСТФХЦЧШЩбвгджзйклмнпрстфхцчшщ';
+const glasn_EN = 'AEIOUYaeiouy';
+const soglasn_EN = 'BCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz';
 
 // Module: Unified Types
 type IntTinyArray = array [1..tinyArrSize] of integer;
@@ -52,27 +44,12 @@ type StrSmallArray = array [1..smallArrSize] of string;
 type StrMediumArray = array [1..mediumArrSize] of string;
 type StrHugeArray = array [1..hugeArrSize] of string;
 type StrExtremeArray = array [1..extremeArrSize] of string;
-type StrUltimateArray = array [1..ultimateArrSize] of string;
+type StrUltimateArray = array of string;
 
-// Module: Integer
-/// Меняет местами два числа типа Integer.
-procedure swap(var I,J: integer);
-  var Temp: integer;
-      begin
-        Temp:=I;
-        I:=J;
-        J:=Temp
-      end;
-      
-/// Находит наибольшее значение среди двух чисел.
-function findMax(var I,J: integer): integer;
-   begin
-      if (I > J) 
-        then 
-          FindMax:=I
-        else 
-          FindMax:=J
-    end;
+type CleanedArrayOutput = record
+     CleanedArray: StrUltimateArray;
+     Length: integer;
+   end;
     
 // Module: Arrays
 /// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647]
@@ -143,217 +120,180 @@ begin
   Result:=f;
 end;
 
-// Module: GraphAPI
-
-/// Создаёт на экране GraphABC.NET декартовую систему координат.
-procedure drawCoordinateSystem();
+// Module: File
+/// Считывает файл с диска в кодировке UTF-16 до конца файла. Выводит содержимое файла типа string.
+function readFile(filePath: string): string;
 var
-  x: integer;
-  y: integer;
-  // Base
-  begin
-  
-  GraphABC.Line(0,240,640,240, FastPascal.Black);
-  GraphABC.Line(320,0,320,480, FastPascal.Black);
-  GraphABC.Line(640,240,635,235, FastPascal.Black);
-  GraphABC.Line(640,240,635,245, FastPascal.Black);
-  GraphABC.Line(320,0,325,5, FastPascal.Black);
-  GraphABC.Line(320,0,315,5, FastPascal.Black);
-  
-  GraphABC.TextOut(630,250,'x');
-  GraphABC.TextOut(325,10,'y');
-  GraphABC.TextOut(310,245,'0');
-  
-  // Lines
-  for x:=1 to 15 do
-    line(x*40,238,x*40,242);
-  for y:=1 to 11 do
-    line(318,y*40,322,y*40);
-  end;
+  txt: Text;
+begin
+  assignFile(txt, filePath);
+  reset(txt);
+  Result:=txt.ReadToEnd;
+end;
 
-/// Рисует в созданной декартовой системе координат график функции sin(x). Выводит значение sin(x) в параметр F.
-procedure drawSinFunction();
+/// Считывает файл с диска в кодировке Encoding до конца файла. Выводит содержимое файла типа string.
+function readFile(filePath: string; encoding: System.Text.Encoding): string;
 var
-  x: integer;
-function f(x:real):real;
-  begin
-    Result:=sin(x);
-  end;
-  
-  begin
-    // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), FastPascal.Black)
-    else moveto(x,round(240-40*f((x-320)/40)));
-  end;
+  txt: Text;
+  s: Object;
+begin
+  assignFile(txt, filePath);
+  reset(txt, encoding);
+  Result:=txt.ReadToEnd;
+end;
 
-/// Рисует в созданной декартовой системе координат график функции sin(x). Окращен в определённый цвет color. Выводит значение sin(x) в параметр F.
-procedure drawSinFunction(var color: System.Drawing.Color);
+/// Удаляет один или несколько типов символов из строки uncleanedString, находящиеся в параметре remove типа String. Возвращает массив, состоящий из комбинаций строк, состоящих из символов, которые были не удалены и разделены пробелом в unclearedString. 
+function clean(uncleanedString, remove: string): CleanedArrayOutput;
 var
-  x: integer;
-function f(x:real):real;
-  begin
-    Result:=sin(x);
-  end;
+  cleaned: StrUltimateArray;
+  i, n: integer;
+begin
+  uncleanedString:=uncleanedString+' ';
+  setLength(cleaned, mediumArrSize);
   
+  for i:= 1 to length(uncleanedString) do
   begin
-    // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), color)
-    else moveto(x,round(240-40*f((x-320)/40)));
+    if (pos(uncleanedString[i], remove) > 0)
+      then uncleanedString[i] := ' ';
   end;
+  while pos('  ', uncleanedString) > 0 do
+  begin
+    delete(uncleanedString, pos('  ', uncleanedString), 1)
+  end;
+  if (uncleanedString[1] = ' ')
+    then delete(uncleanedString, 1, 1);
+  n:=0;
+  while (uncleanedString <> '') do
+  begin
+    n:=n+1;
+    cleaned[n]:=copy(uncleanedString, 1, pos(' ', uncleanedString)-1);
+    delete(uncleanedString, 1, pos(' ', uncleanedString));
+  end;
+  Result.CleanedArray := cleaned;
+  Result.Length := n;
+end;
 
-/// Рисует в созданной декартовой системе координат график функции cos(x). Выводит значение cos(x) в параметр F.
-procedure drawCosFunction();
+// Module: Array Sorters
+/// Сортирует все элементы массива по алфавиту, сравнивая только первый символ элемента.
+procedure sortAlphabeticallyByFirstChar(unsortedArray: array of String);
 var
-  x: integer;
-function f(x:real):real;
+  i, j, n: integer;
+  s: string[20];
+  arr: array of String;
+begin
+  for i:= 1 to unsortedArray.Length-1 do
   begin
-    Result:=cos(x);
+    if (unsortedArray[i] <> '')
+      then inc(n);
   end;
-  
-  begin
-    // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), FastPascal.Black)
-    else moveto(x,round(240-40*f((x-320)/40)));
-  end;
+  for i:=1 to N-1 do
+        for j:=1 to N-i do
+            if unsortedArray[j][1] > unsortedArray[j+1][1]
+            then begin
+                s := unsortedArray[j];
+                unsortedArray[j] := unsortedArray[j+1];
+                unsortedArray[j+1] := s;
+            end;
+end;
 
-/// Рисует в созданной декартовой системе координат график функции cos(x). Окращен в определённый цвет color. Выводит значение cos(x) в параметр F.
-procedure drawCosFunction(var color: System.Drawing.Color);
+/// Сортирует все элементы массива по алфавиту.
+procedure sortAlphabetically(unsortedArray: array of String);
 var
-  x: integer;
-function f(x:real):real;
+  i, j, n: integer;
+  s: string;
+begin
+  for i:= 1 to unsortedArray.Length-1 do
   begin
-    Result:=cos(x);
+    if (unsortedArray[i] <> '')
+      then inc(n);
   end;
-  
-  begin
-    // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), color)
-    else moveto(x,round(240-40*f((x-320)/40)));
-  end;
+  for i:=n-1 downto 1 do
+    for j:=1 to i-1 do
+      if unsortedArray[j] > unsortedArray[j+1]
+            then begin
+                s := unsortedArray[j];
+                unsortedArray[j] := unsortedArray[j+1];
+                unsortedArray[j+1] := s;
+            end;
+end;
 
-/// Рисует в созданной декартовой системе координат график функции tg(x). Выводит значение tg(x) в параметр F.
-procedure drawTanFunction();
+/// Сортирует все элементы в параметре типа String по алфавиту.
+procedure sortAlphabeticallyInElement(var s: string);
 var
-  x: integer;
-function f(x:real):real;
-  begin
-    Result:=tan(x);
-  end;
-  
-  begin
-    // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), FastPascal.Black)
-    else moveto(x,round(240-40*f((x-320)/40)));
-  end;
+  i,j,n:integer;
+  c: char;
+begin
+  n := length(s);
+  for i:=n downto 1 do
+    for j:=1 to i-1 do
+      if (s[j] > s[j+1])
+           then begin
+                c := s[j];
+                s[j] := s[j+1];
+                s[j+1] := c;
+            end;
+        write(s, ' ');
+end;
 
-/// Рисует в созданной декартовой системе координат график функции tg(x). Окращен в определённый цвет color. Выводит значение tg(x) в параметр F.
-procedure drawTanFunction(var color: System.Drawing.Color);
-var
-  x: integer;
-function f(x:real):real;
-  begin
-    Result:=tan(x);
-  end;
-  
-  begin
-    // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), color)
-    else moveto(x,round(240-40*f((x-320)/40)));
-  end;
-  
+// Module: Unused
+// Этот модуль не рекомендуется к использованию.
 
-/// Рисует в созданной декартовой системе координат график функции ctg(x). Выводит значение ctg(x) в параметр F.
-procedure drawCotanFunction();
+/// @Deprecated
+/// Сдвигает все гласные буквы в строке влево, а согласные - вправо.
+procedure moveLetters(s: string);
 var
-  x: integer;
-function f(x:real):real;
-  begin
-    if (tan(x) <> 0) and (sin(x) <> 0)
-    then f:= 1/tan(x);
-  end;
-  
-  begin
-    // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), FastPascal.Black)
-    else moveto(x,round(240-40*f((x-320)/40)));
-  end;
+  i,j,n:integer;
+  c: char;
+begin
+  n := length(s);
+  for i:=n downto 1 do
+    for j:=1 to i-1 do
+      if (pos(s[j], FastPascal.glasn_RU) = 0) and (pos(s[j+1], FastPascal.glasn_RU) > 0) or (pos(s[j], FastPascal.glasn_EN) = 0) and (pos(s[j+1], FastPascal.glasn_EN) > 0)
+           then begin
+                c := s[j];
+                s[j] := s[j+1];
+                s[j+1] := c;
+            end;
+        write(s, ' ');
+end;
 
-/// Рисует в созданной декартовой системе координат график функции ctg(x). Окращен в определённый цвет color. Выводит значение ctg(x) в параметр F.
-procedure drawCotanFunction(var color: System.Drawing.Color);
+/// @Deprecated
+/// Переворачивает строку задом наперёд.
+procedure reverseLetters(s: string);
 var
-  x: integer;
-function f(x:real):real;
-  begin
-    if (tan(x) <> 0) and (sin(x) <> 0)
-    then f:= 1/tan(x);
-  end;
-  
-  begin
-    // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), color)
-    else moveto(x,round(240-40*f((x-320)/40)));
-  end;
+  i,j,n:integer;
+  c: char;
+begin
+  n := length(s);
+  for i:=n downto 1 do
+    for j:=1 to i-1 do
+            begin
+                c := s[j];
+                s[j] := s[j+1];
+                s[j+1] := c;
+            end;
+        write(s, ' ');
+end;
 
-/// Рисует график произвольной функции. Выводит значение функции в параметр F. В параметрах drawFunction() указать саму функцию. Например, если необходимо начертить график функции y=sin(x) - укажите "sin(x)".
-procedure drawFunction();
+/// @Deprecated
+/// Выводит строку, содержащую хотя бы 2 совпадающих буквы.
+procedure writeWordWithTwoLetters(var s: string);
 var
-  x: integer;
-function f(x:real):real;
-  begin
-    Result:=1;
-  end;
-  
-  begin
-    // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), FastPascal.Black)
-    else moveto(x,round(240-40*f((x-320)/40)));
-  end;
-  
+  i,j,n:integer;
+  c: char;
+  flag: boolean;
+begin
+  flag := false;
+  n := length(s);
+  for i:=1 to n do begin
+    for j:=1 to i-1 do
+      if (ord(s[i]) = ord(s[j])) and (flag = false)
+           then 
+             begin write(s, ' ');
+                   flag:=true; end;
+             end;
+end;
+
 // fix: Empty Body of a library unit to compile it easily.
 begin
 end.
