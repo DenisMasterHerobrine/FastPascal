@@ -1,4 +1,4 @@
-﻿uses FastPascal, GraphABC;
+﻿uses FastGraph, GraphABC;
 
 // This example features GraphABC Module from FastPascal Unit Library.
 // Draws a dekart coordinates system on screen and draws graphics of basic trigonometric functions.
@@ -8,17 +8,17 @@
 
 begin
   // Вызов процедуры для того, чтобы отобразить систему координат.
-  FastPascal.drawCoordinateSystem;
+  FastGraph.drawCoordinateSystem;
   
   // Вызов процедуры draw() для функции sin(x) зелёным цветом.
-  FastPascal.drawSinFunction(FastPascal.Green);
+  FastGraph.drawSinFunction(FastGraph.Green);
   
-  // Вызов процедуры draw() для функции cos(x).
-  FastPascal.drawCosFunction(FastPascal.DarkBlue);
+  // Вызов процедуры draw() для функции sin(x).
+  FastGraph.drawCosFunction(FastGraph.DarkBlue);
   
-  // Вызов процедуры draw() для функции tg(x).
-  FastPascal.drawTanFunction(FastPascal.DarkGreen);
+  // Вызов процедуры draw() для функции sin(x).
+  FastGraph.drawTanFunction(FastGraph.DarkGreen);
   
-  // Вызов процедуры draw() для функции ctg(x).
-  FastPascal.drawCotanFunction(FastPascal.Magenta);
+  // Вызов процедуры draw() для функции sin(x).
+  FastGraph.drawCotanFunction(FastGraph.Magenta);
 end.
