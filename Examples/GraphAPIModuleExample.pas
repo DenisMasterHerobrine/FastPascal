@@ -24,5 +24,5 @@ begin
   FastGraph.drawCotanFunction(FastGraph.Magenta);
   
   // Вызов процедуры draw() для произвольной функции.
-  FastGraph.drawFunction(cos(x1)+2/12, FastGraph.Red);
+  for x1:=1 to 640 do FastGraph.drawFunction(cos(x1)+2/12, FastGraph.Red);
 end.

@@ -1,6 +1,11 @@
 ﻿unit FastGraph;
 uses FastPascal, GraphABC;
 
+// FastGraph Unit Library.
+// Licensed under MIT License.
+// @author Denis Kalashnikov (DenisMasterHerobrine)
+// https://github.com/DenisMasterHerobrine/FastPascal
+
 var
     // Module: GraphAPI Color Map Library
     Red: System.Drawing.Color := rgb(163, 11, 3);
@@ -18,6 +23,32 @@ var
 
 /// Создаёт на экране GraphABC.NET декартовую систему координат.
 procedure drawCoordinateSystem();
+var
+  x: integer;
+  y: integer;
+  
+  begin
+  // Base
+  GraphABC.Line(0,240,640,240, FastGraph.Black);
+  GraphABC.Line(320,0,320,480, FastGraph.Black);
+  GraphABC.Line(640,240,635,235, FastGraph.Black);
+  GraphABC.Line(640,240,635,245, FastGraph.Black);
+  GraphABC.Line(320,0,325,5, FastGraph.Black);
+  GraphABC.Line(320,0,315,5, FastGraph.Black);
+  
+  GraphABC.TextOut(630,250,'x');
+  GraphABC.TextOut(325,10,'y');
+  GraphABC.TextOut(310,245,'0');
+  
+  // Lines
+  for x:=1 to 15 do
+    line(x*40,238,x*40,242);
+  for y:=1 to 11 do
+    line(318,y*40,322,y*40);
+  end;
+
+/// Создаёт на экране GraphABC.NET декартовую систему координат цветом color
+procedure drawCoordinateSystem(color: System.Drawing.Color);
 var
   x: integer;
   y: integer;

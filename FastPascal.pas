@@ -5,16 +5,15 @@
 // @author Denis Kalashnikov (DenisMasterHerobrine)
 // https://github.com/DenisMasterHerobrine/FastPascal
 
-// TODO: Оптимизировать все методы до array of integer/string
 // TODO: Решение квадратных уравнений.
 // TODO: Графики функций со встраиваемой функцией и системой координат.
-const CC:string[16]='0123456789ABCDEF';
+const CC: string[16] = '0123456789ABCDEF';
 
 var DELIMITER: string := ' ';
     TESTSTRING: string := '/*TEMPLATE_STRING_FOR_TESTING_PURPOSES!!!*/';
     EPSILON: real := 0.0000000000001;
     
-    // FastMath
+    // Module: FastMath Library
     DEGREES_TO_RADIANS: real := 0.017453292519943295;
     RADIANS_TO_DEGREES: real := 57.29577951308232;
     SQRT2: real := 1.41421356237309;
@@ -107,7 +106,7 @@ begin
   for var i:=1 to n do
     if Result<a[i] then 
       Result := a[i];
-end;  
+end;
 
 // Module: Math
 /// Возвращает факториал числа типа BigInteger.
@@ -154,6 +153,53 @@ begin
   angrad := angrad * RADIANS_TO_DEGREES;
 end;
 
+/// Находит корни квадратного уравнения и возвращает в виде параметров m и n, если корни существует, то вернёт true параметром f, иначе вернёт false, если корни не удалось найти.
+procedure findSquaredRoots(a,b,c:real; var m,n:real; f:boolean);
+var d:real;
+begin
+  f:=true;
+  d:=b*b-4*a*c;
+  if d<0 then f:=false;
+  if (d=0)
+    then begin
+    n:=-b/2*a;
+    m:=-b/2*a;
+  end
+end;
+
+/// Находит НОД двух чисел m и n.
+function findGreatestCommonDivider(m,n:integer):integer;
+  begin
+  while m*n<>0 do
+    if m>n then m:=m mod n
+           else n:=n mod m;
+    if n=0 then Result := m
+           else Result := n;
+  end;
+
+/// Определяет, является ли число простым. Выводит true, если число простое. Если число не является простым - выводит false.
+function pr(N:integer):boolean;
+var i:integer;
+begin
+  Result := true;
+  for i:=2 to n div 2 do
+    if n mod i = 0 then Result := false;
+end;
+
+/// Определяет, является ли данное число палиндромом
+function isPalindrome(a:integer):boolean;
+var b,c:integer;
+begin
+b:=a;
+c:=0;
+while b>0 do
+ begin
+  c:=c*10+(b mod 10);
+  b:=b div 10;
+ end;
+ if c=a then palindr:=true;
+end;
+
 // Module: File
 /// Считывает файл с диска в кодировке UTF-16 до конца файла. Выводит содержимое файла типа string.
 function readFile(filePath: string): string;
@@ -165,7 +211,7 @@ begin
   Result:=txt.ReadToEnd;
 end;
 
-/// Считывает файл с диска в кодировке Encoding до конца файла. Выводит содержимое файла типа string.
+/// Считывает файл с диска в кодировке encoding до конца файла. Выводит содержимое файла типа string.
 function readFile(filePath: string; encoding: System.Text.Encoding): string;
 var
   txt: Text;
@@ -205,6 +251,26 @@ begin
   end;
   Result.CleanedArray := cleaned;
   Result.Length := n;
+end;
+
+// Module: String
+/// Проверяет, повторяются ли символы в строке.
+function isRepeatedSymbolsExist(s: string): boolean;
+var i, j, k: integer;
+    c:char;
+    a:array[''..'ࠀ'] of integer;
+begin
+  for c:='' to 'ࠀ' do
+  begin
+    a[c]:=0;
+  end;
+  for i:=1 to length(s) do a[s[i]]:=a[s[i]]+1;
+    k:=0;
+  for c:='' to 'ࠀ' do
+    if a[c]>1 then inc(k);
+  if (k <> 0)
+    then Result := true
+    else Result := false;
 end;
 
 // Module: Array Sorters
@@ -268,7 +334,7 @@ begin
             end;
         write(s, ' ');
 end;
-
+ 
 // Module: Unused
 // Этот модуль не рекомендуется к использованию.
 
