@@ -7,9 +7,15 @@
 // Находит факториал числа.
 
 var a: integer;
+    b: real;
 
 begin
   writeln('Введите число.');
   readln(a);
   writeln('Факториал числа ', a, ': ', FastPascal.factorial(a));
+  
+  writeln('Введите количество радиан.');
+  readln(b);
+  FastPascal.toDegrees(b);
+  writeln('Угловая величина равна: ', b);
 end.

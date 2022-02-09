@@ -5,11 +5,19 @@
 // @author Denis Kalashnikov (DenisMasterHerobrine)
 // https://github.com/DenisMasterHerobrine/FastPascal
 
+// TODO: Оптимизировать все методы до array of integer/string
 // TODO: Решение квадратных уравнений.
 // TODO: Графики функций со встраиваемой функцией и системой координат.
+const CC:string[16]='0123456789ABCDEF';
 
-var Delimiter: string := ' ';
-    TestString: string := '/*TEMPLATE_STRING_FOR_TESTING_PURPOSES!!!*/';
+var DELIMITER: string := ' ';
+    TESTSTRING: string := '/*TEMPLATE_STRING_FOR_TESTING_PURPOSES!!!*/';
+    EPSILON: real := 0.0000000000001;
+    
+    // FastMath
+    DEGREES_TO_RADIANS: real := 0.017453292519943295;
+    RADIANS_TO_DEGREES: real := 57.29577951308232;
+    SQRT2: real := 1.41421356237309;
     
 // Module: Unified Constants
 const tinyArrSize = 10;
@@ -30,14 +38,14 @@ type IntSmallArray = array [1..smallArrSize] of integer;
 type IntMediumArray = array [1..mediumArrSize] of integer;
 type IntHugeArray = array [1..hugeArrSize] of integer;
 type IntExtremeArray = array [1..extremeArrSize] of integer;
-type IntUltimateArray = array [1..ultimateArrSize] of integer;
+type IntUltimateArray = array of integer;
 
 type LongTinyArray = array [1..tinyArrSize] of longint;
 type LongSmallArray = array [1..smallArrSize] of longint;
 type LongMediumArray = array [1..mediumArrSize] of longint;
 type LongHugeArray = array [1..hugeArrSize] of longint;
 type LongExtremeArray = array [1..extremeArrSize] of longint;
-type LongUltimateArray = array [1..ultimateArrSize] of longint;
+type LongUltimateArray = array of longint;
 
 type StrTinyArray = array [1..tinyArrSize] of string;
 type StrSmallArray = array [1..smallArrSize] of string;
@@ -49,8 +57,24 @@ type StrUltimateArray = array of string;
 type CleanedArrayOutput = record
      CleanedArray: StrUltimateArray;
      Length: integer;
-   end;
-    
+     end;
+
+// Module: Integer
+/// Переводит число из десятичной системы счисления в любую другую, указанную параметром divider и возвращает его типом string.
+function changeNotation(var defaultNumber:integer; divider:integer):string;
+var
+  ConvertedToCCValue:string; 
+begin
+readln(defaultNumber, divider);
+ConvertedToCCValue:='';
+while defaultNumber > 0 do
+ begin
+      ConvertedToCCValue := CC[defaultNumber mod divider+1] + ConvertedToCCValue;
+      defaultNumber := defaultNumber div divider;
+ end;
+ Result := ConvertedToCCValue;
+end;
+
 // Module: Arrays
 /// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647]
 procedure fillArray(var a: IntUltimateArray; n: integer);
@@ -64,7 +88,7 @@ procedure writeArray(const a: IntUltimateArray; n: integer);
 begin
   for var i:=1 to n do
     write(a[i], Delimiter);
-  writeln;  
+  writeln;
 end;
 
 /// Возвращает минимальный элемент в массиве
@@ -83,10 +107,9 @@ begin
   for var i:=1 to n do
     if Result<a[i] then 
       Result := a[i];
-end;
+end;  
 
 // Module: Math
-
 /// Возвращает факториал числа типа BigInteger.
 function factorial(j: Integer): BigInteger;
 var
@@ -96,11 +119,10 @@ var
 begin
 for i := 0 to j do
 begin
-  if (i=0) or (i=1) then
-    f:=1
-      else
-       f:=f*i;
-       end;
+  if (i=0) or (i=1) 
+  then f:=1
+  else f:=f*i;
+end;
   Result:=f;
 end;
 
@@ -118,6 +140,18 @@ begin
        f:=f*i;
        end;
   Result:=f;
+end;
+
+/// Конвертирует градусы в радианы.
+procedure toRadians(var angdeg: real);
+begin
+  angdeg := angdeg * DEGREES_TO_RADIANS;
+end;
+
+/// Конвертирует радианы в градусы.
+procedure toDegrees(var angrad: real);
+begin
+  angrad := angrad * RADIANS_TO_DEGREES;
 end;
 
 // Module: File
