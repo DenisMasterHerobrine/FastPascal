@@ -6,7 +6,8 @@
 // https://github.com/DenisMasterHerobrine/FastPascal
 
 // TODO: Решение квадратных уравнений.
-// TODO: Графики функций со встраиваемой функцией и системой координат.
+// TODO: Скобочная последовательность
+
 const CC: string[16] = '0123456789ABCDEF';
 
 var DELIMITER: string := ' ';
@@ -75,24 +76,36 @@ while defaultNumber > 0 do
 end;
 
 // Module: Arrays
-/// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647]
+/// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где n - количество чисел в массиве.
 procedure fillArray(var a: IntUltimateArray; n: integer);
 begin
-  for var i:=1 to n do
+  SetLength(a, n);
+  for var i:=1 to n-1 do
     a[i] := Random(-maxint+1, maxint-1);
 end;
 
-/// Выводит массив
-procedure writeArray(const a: IntUltimateArray; n: integer);
+/// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где n - количество чисел в массиве, min - минимальное значение сгенерированного числа, max - максимальное значение сгенерированного числа.
+procedure fillArray(var a: IntUltimateArray; n, min, max: integer);
 begin
-  for var i:=1 to n do
+  SetLength(a, n);
+  if (min > -maxint+1) and (min < maxint) and (max < maxint-1) and (max > -maxint+1)
+  then for var i:=1 to n-1 do
+    a[i] := Random(min, max);
+end;
+
+/// Выводит массив до n-ного элемента
+procedure writeArray(var a: IntUltimateArray; n: integer);
+begin
+  SetLength(a, n);
+  for var i:=1 to n-1 do
     write(a[i], Delimiter);
   writeln;
 end;
 
 /// Возвращает минимальный элемент в массиве
-function findMinInArray(const a: IntUltimateArray; n: integer): integer;
+function findMinInArray(var a: IntUltimateArray; n: integer): integer;
 begin
+  SetLength(a, n);
   Result := a[1];
   for var i:=1 to n do
     if Result>a[i] then 
@@ -100,12 +113,22 @@ begin
 end;
 
 /// Возвращает максимальный элемент в массиве
-function findMaxInArray(const a: IntUltimateArray; n: integer): integer;
+function findMaxInArray(var a: IntUltimateArray; n: integer): integer;
 begin
+  SetLength(a, n);
   Result := a[1];
   for var i:=1 to n do
     if Result<a[i] then 
       Result := a[i];
+end;
+
+/// Находит сумму n чисел в массиве типа BigInteger.
+function sum(var a: IntUltimateArray; n: integer): BigInteger;
+var b: BigInteger;
+begin
+  for var i:=1 to n-1 do
+    b := b + a[i];
+  Result := b;
 end;
 
 // Module: Math
@@ -187,8 +210,8 @@ begin
 end;
 
 /// Определяет, является ли данное число палиндромом
-function isPalindrome(a:integer):boolean;
-var b,c:integer;
+function isPalindrome(n: integer):boolean;
+var a,b,c:integer;
 begin
 b:=a;
 c:=0;
@@ -197,7 +220,34 @@ while b>0 do
   c:=c*10+(b mod 10);
   b:=b div 10;
  end;
- if c=a then palindr:=true;
+ if c=a then Result:=true;
+end;
+
+/// Определяет, является ли число n числом Фибоначчи. 
+function isFibonacciNumber(n: integer):boolean;
+var
+  a, b, c, i: integer;
+
+begin
+  b := 1;
+  c := b;
+  for i := 1 to trunc(power(n, 2)) do
+  begin
+    a := c;
+    c := b;
+    b := a + b;
+    if (n = a) then
+    begin
+      Result := true;
+      a := -1;
+      break;
+    end;
+    if (a > n) then
+    begin
+      Result := false;
+      break;
+    end;
+  end;
 end;
 
 // Module: File
@@ -269,6 +319,28 @@ begin
   for c:='' to 'ࠀ' do
     if a[c]>1 then inc(k);
   if (k <> 0)
+    then Result := true
+    else Result := false;
+end;
+
+/// Проверяет строку на соблюдение баланса скобочной последовательности. Также определяет, соблюдена ли скобочная последовательность. Если скобочная последовательность соблюдена - возвращает true, иначе - false.
+function isBracketsBalanced(s: string): boolean;
+var
+  str: string;
+  i,s1,s2: integer;
+  fl:boolean;
+begin
+  s1:=0; 
+  s2:=0;
+  
+  for i:=1 to length(s) do  {}
+  begin
+    if (s[i]='(') or (s[i]='{') or (s[i]='[') or (s[i]='<') then s1:=s1+1;
+    if (s[i]=')') or (s[i]='}') or (s[i]=']') or (s[i]='>') then s2:=s2+1;
+    if s2 > s1 then fl:=true;
+  end;
+  
+  if (s1=s2) and (fl=false) 
     then Result := true
     else Result := false;
 end;

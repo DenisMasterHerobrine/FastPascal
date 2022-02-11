@@ -6,6 +6,8 @@ uses FastPascal, GraphABC;
 // @author Denis Kalashnikov (DenisMasterHerobrine)
 // https://github.com/DenisMasterHerobrine/FastPascal
 
+// TODO: Графики функций со встраиваемой функцией и системой координат.
+
 var
     // Module: GraphAPI Color Map Library
     Red: System.Drawing.Color := rgb(163, 11, 3);
