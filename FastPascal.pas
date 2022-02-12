@@ -6,7 +6,7 @@
 // https://github.com/DenisMasterHerobrine/FastPascal
 
 // TODO: Решение квадратных уравнений.
-// TODO: Скобочная последовательность
+// TODO: Скобочная последовательность, с учётом <(>)
 
 const CC: string[16] = '0123456789ABCDEF';
 
@@ -131,6 +131,100 @@ begin
   Result := b;
 end;
 
+/// Выводит арифметическую прогрессию из n чисел, с шагом d и первым членом прогрессии a1.
+procedure printArithmeticProgression(n: integer; a1, d: real);
+var i:integer;
+    a:array of real;
+begin
+  SetLength(a, n);
+  a[0] := a1;
+  for i:=1 to N-1 do
+    a[i] := a[i-1] + d;
+  for i:=0 to N-1 do
+    write(a[i],' ');
+end;
+
+/// Создаёт арифметическую прогрессию из n чисел, с шагом d и первым членом прогрессии a1 и выдаёт в виде массива чисел типа integer.
+function generateArithmeticProgression(n: integer; a1, d: integer): array of integer;
+var i:integer;
+    a:array of integer;
+begin
+  SetLength(a, n);
+  a[0] := a1;
+  for i:=1 to N-1 do
+    a[i] := a[i-1] + d;
+  Result := a;
+end;
+
+/// Создаёт арифметическую прогрессию из n чисел, с шагом d и первым членом прогрессии a1 и выдаёт в виде массива чисел типа real.
+function generateArithmeticProgression(n: integer; a1, d: real): array of real;
+var i:integer;
+    a:array of real;
+begin
+  SetLength(a, n);
+  a[0] := a1;
+  for i:=1 to N-1 do
+    a[i] := a[i-1] + d;
+  Result := a;
+end;
+
+/// Определяет, существует ли данное число в массиве.
+function isExistInArray(a: array of integer; n: integer): boolean;
+var len: integer;
+begin
+  len := length(a);
+  Result := False;
+  for var i:=0 to len do
+    if a[i] = n then 
+    begin
+      Result := True;
+      break
+    end;
+end;
+
+/// Определяет, существует ли данное число в массиве.
+function isExistInArray(a: array of real; n: integer): boolean;
+var len: integer;
+begin
+  len := length(a);
+  Result := False;
+  for var i:=0 to len do
+    if a[i] = n then 
+    begin
+      Result := True;
+      break
+    end;
+end;
+
+/// Определяет, существует ли данное число в массиве.
+function isExistInArray(a: array of real; n: real): boolean;
+var len: integer;
+begin
+  len := length(a);
+  Result := False;
+  for var i:=0 to len-1 do
+    if a[i] = n then 
+    begin
+      Result := True;
+      break
+    end;
+end;
+
+/// Определяет, существует ли данное число в массиве.
+function isExistInArray(a: array of string; n: string): boolean;
+var len: integer;
+begin
+  len := length(a);
+  Result := False;
+  for var i:=0 to len-1 do
+    if a[i] = n then 
+    begin
+      Result := True;
+      break
+    end;
+end;
+
+
 // Module: Math
 /// Возвращает факториал числа типа BigInteger.
 function factorial(j: Integer): BigInteger;
@@ -148,7 +242,8 @@ end;
   Result:=f;
 end;
 
-/// Возвращает факториал числа типа Integer. Невозможно определить факториал числа, большего чем 16.
+/// @Deprecated
+/// Возвращает факториал числа типа Integer. Невозможно определить факториал числа, большего чем 16 этим методом.
 function factorialInt(j: Integer): integer;
 var
   i,f: integer;
@@ -201,7 +296,7 @@ function findGreatestCommonDivider(m,n:integer):integer;
   end;
 
 /// Определяет, является ли число простым. Выводит true, если число простое. Если число не является простым - выводит false.
-function pr(N:integer):boolean;
+function isSimple(N:integer):boolean;
 var i:integer;
 begin
   Result := true;
@@ -210,8 +305,8 @@ begin
 end;
 
 /// Определяет, является ли данное число палиндромом
-function isPalindrome(n: integer):boolean;
-var a,b,c:integer;
+function isPalindrome(a: integer):boolean;
+var b,c:integer;
 begin
 b:=a;
 c:=0;
