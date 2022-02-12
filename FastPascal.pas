@@ -224,6 +224,36 @@ begin
     end;
 end;
 
+/// Вставляет в массив элемент n, который будет стоять на index месте.
+procedure insertIntoArray(var a: array of integer; n: integer; index: integer);
+var i, l: integer;
+begin
+    SetLength(a, length(a)+1);
+    for i := length(a)-2 downto index do
+        a[i+1] := a[i];
+    a[index] := n;
+end;
+
+/// Вставляет в массив элемент n, который будет стоять на index месте.
+procedure insertIntoArray(var a: array of real; n: real; index: integer);
+var i, l: integer;
+begin
+    SetLength(a, length(a)+1);
+    for i := length(a)-2 downto index do
+        a[i+1] := a[i];
+    a[index] := n;
+end;
+
+/// Вставляет в массив строку s, которая будет стоять на index месте.
+procedure insertIntoArray(var a: array of string; s: string; index: integer);
+var i, l: integer;
+begin
+    SetLength(a, length(a)+1);
+    for i := length(a)-2 downto index do
+        a[i+1] := a[i];
+    a[index] := s;
+end;
+
 
 // Module: Math
 /// Возвращает факториал числа типа BigInteger.
@@ -501,7 +531,7 @@ begin
             end;
         write(s, ' ');
 end;
- 
+
 // Module: Unused
 // Этот модуль не рекомендуется к использованию.
 
