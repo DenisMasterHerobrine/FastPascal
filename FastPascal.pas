@@ -5,8 +5,7 @@
 // @author Denis Kalashnikov (DenisMasterHerobrine)
 // https://github.com/DenisMasterHerobrine/FastPascal
 
-// TODO: Решение квадратных уравнений.
-// TODO: Скобочная последовательность, с учётом <(>)
+// TODO: Скобочная последовательность, с учётом <(>) (?)
 
 const CC: string[16] = '0123456789ABCDEF';
 
@@ -76,148 +75,157 @@ while defaultNumber > 0 do
 end;
 
 // Module: Arrays
-/// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где n - количество чисел в массиве.
-procedure fillArray(var a: IntUltimateArray; n: integer);
+/// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где count - количество чисел в массиве.
+procedure fillArray(var arr: IntUltimateArray; count: integer);
 begin
-  SetLength(a, n);
-  for var i:=1 to n-1 do
-    a[i] := Random(-maxint+1, maxint-1);
+  SetLength(arr, count);
+  for var i:=1 to count-1 do
+    arr[i] := Random(-maxint+1, maxint-1);
 end;
 
 /// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где n - количество чисел в массиве, min - минимальное значение сгенерированного числа, max - максимальное значение сгенерированного числа.
-procedure fillArray(var a: IntUltimateArray; n, min, max: integer);
+procedure fillArray(var arr: IntUltimateArray; count, min, max: integer);
 begin
-  SetLength(a, n);
+  SetLength(arr, count);
   if (min > -maxint+1) and (min < maxint) and (max < maxint-1) and (max > -maxint+1)
-  then for var i:=1 to n-1 do
-    a[i] := Random(min, max);
+  then for var i:=1 to count-1 do
+    arr[i] := Random(min, max);
 end;
 
-/// Выводит массив до n-ного элемента
-procedure writeArray(var a: IntUltimateArray; n: integer);
+/// Выводит массив до элемента с номером element.
+procedure writeArray(var arr: IntUltimateArray; element: integer);
 begin
-  SetLength(a, n);
-  for var i:=1 to n-1 do
-    write(a[i], Delimiter);
+  SetLength(arr, element);
+  for var i:=1 to element-1 do
+    write(arr[i], Delimiter);
   writeln;
 end;
 
-/// Возвращает минимальный элемент в массиве
-function findMinInArray(var a: IntUltimateArray; n: integer): integer;
+/// Возвращает минимальный элемент в массиве.
+function findMinInArray(var arr: IntUltimateArray): integer;
 begin
-  SetLength(a, n);
-  Result := a[1];
-  for var i:=1 to n do
-    if Result>a[i] then 
-      Result := a[i];
+  SetLength(arr, length(arr));
+  Result := arr[1];
+  for var i:=1 to length(arr) do
+    if Result > arr[i] then 
+      Result := arr[i];
 end;
 
-/// Возвращает максимальный элемент в массиве
-function findMaxInArray(var a: IntUltimateArray; n: integer): integer;
+/// Возвращает максимальный элемент в массива.
+function findMaxInArray(var arr: IntUltimateArray): integer;
 begin
-  SetLength(a, n);
-  Result := a[1];
-  for var i:=1 to n do
-    if Result<a[i] then 
-      Result := a[i];
+  SetLength(arr, length(arr));
+  Result := arr[1];
+  for var i:=1 to length(arr) do
+    if Result < arr[i] then 
+      Result := arr[i];
 end;
 
-/// Находит сумму n чисел в массиве типа BigInteger.
-function sum(var a: IntUltimateArray; n: integer): BigInteger;
-var b: BigInteger;
+/// Находит сумму всех чисел в массиве типа BigInteger.
+function sum(var arr: IntUltimateArray): BigInteger;
+var altarr: BigInteger;
 begin
-  for var i:=1 to n-1 do
-    b := b + a[i];
-  Result := b;
+  for var i:=1 to length(arr)-1 do
+    altarr := altarr + arr[i];
+  Result := altarr;
 end;
 
-/// Выводит арифметическую прогрессию из n чисел, с шагом d и первым членом прогрессии a1.
-procedure printArithmeticProgression(n: integer; a1, d: real);
+/// Находит сумму count чисел в массиве типа BigInteger.
+function sum(var arr: IntUltimateArray; count: integer): BigInteger;
+var altarr: BigInteger;
+begin
+  for var i:=1 to count-1 do
+    altarr := altarr + arr[i];
+  Result := altarr;
+end;
+
+/// Выводит арифметическую прогрессию из count чисел, с шагом step и первым членом прогрессии firstElement.
+procedure printArithmeticProgression(count: integer; firstElement, step: real);
 var i:integer;
-    a:array of real;
+    arr:array of real;
 begin
-  SetLength(a, n);
-  a[0] := a1;
-  for i:=1 to N-1 do
-    a[i] := a[i-1] + d;
-  for i:=0 to N-1 do
-    write(a[i],' ');
+  SetLength(arr, count);
+  arr[0] := firstElement;
+  for i:=1 to count-1 do
+    arr[i] := arr[i-1] + step;
+  for i:=0 to count-1 do
+    write(arr[i],' ');
 end;
 
 /// Создаёт арифметическую прогрессию из n чисел, с шагом d и первым членом прогрессии a1 и выдаёт в виде массива чисел типа integer.
-function generateArithmeticProgression(n: integer; a1, d: integer): array of integer;
+function generateArithmeticProgression(count: integer; firstElement, step: integer): array of integer;
 var i:integer;
-    a:array of integer;
+    arr:array of integer;
 begin
-  SetLength(a, n);
-  a[0] := a1;
-  for i:=1 to N-1 do
-    a[i] := a[i-1] + d;
-  Result := a;
+  SetLength(arr, count);
+  arr[0] := firstElement;
+  for i:=1 to count-1 do
+    arr[i] := arr[i-1] + step;
+  Result := arr;
 end;
 
 /// Создаёт арифметическую прогрессию из n чисел, с шагом d и первым членом прогрессии a1 и выдаёт в виде массива чисел типа real.
-function generateArithmeticProgression(n: integer; a1, d: real): array of real;
+function generateArithmeticProgression(count: integer; firstElement, step: real): array of real;
 var i:integer;
-    a:array of real;
+    arr:array of real;
 begin
-  SetLength(a, n);
-  a[0] := a1;
-  for i:=1 to N-1 do
-    a[i] := a[i-1] + d;
-  Result := a;
+  SetLength(arr, count);
+  arr[0] := firstElement;
+  for i:=1 to count-1 do
+    arr[i] := arr[i-1] + step;
+  Result := arr;
 end;
 
 /// Определяет, существует ли данное число в массиве.
-function isExistInArray(a: array of integer; n: integer): boolean;
+function isExistInArray(arr: array of integer; intValue: integer): boolean;
 var len: integer;
 begin
-  len := length(a);
+  len := length(arr);
   Result := False;
   for var i:=0 to len do
-    if a[i] = n then 
-    begin
+    if (arr[i] = intValue) 
+    then begin
       Result := True;
       break
     end;
 end;
 
 /// Определяет, существует ли данное число в массиве.
-function isExistInArray(a: array of real; n: integer): boolean;
+function isExistInArray(arr: array of real; intValue: integer): boolean;
 var len: integer;
 begin
-  len := length(a);
+  len := length(arr);
   Result := False;
   for var i:=0 to len do
-    if a[i] = n then 
-    begin
+    if (arr[i] = intValue)
+    then begin
       Result := True;
       break
     end;
 end;
 
 /// Определяет, существует ли данное число в массиве.
-function isExistInArray(a: array of real; n: real): boolean;
+function isExistInArray(arr: array of real; realValue: real): boolean;
 var len: integer;
 begin
-  len := length(a);
+  len := length(arr);
   Result := False;
   for var i:=0 to len-1 do
-    if a[i] = n then 
-    begin
+    if (arr[i] = realValue) 
+    then begin
       Result := True;
       break
     end;
 end;
 
 /// Определяет, существует ли данное число в массиве.
-function isExistInArray(a: array of string; n: string): boolean;
+function isExistInArray(arr: array of string; stringValue: string): boolean;
 var len: integer;
 begin
-  len := length(a);
+  len := length(arr);
   Result := False;
   for var i:=0 to len-1 do
-    if a[i] = n then 
+    if arr[i] = stringValue then 
     begin
       Result := True;
       break
@@ -225,68 +233,120 @@ begin
 end;
 
 /// Вставляет в массив элемент n, который будет стоять на index месте.
-procedure insertIntoArray(var a: array of integer; n: integer; index: integer);
+procedure duplicate(var arr: array of integer; index: integer);
 var i, l: integer;
 begin
-    SetLength(a, length(a)+1);
-    for i := length(a)-2 downto index do
-        a[i+1] := a[i];
-    a[index] := n;
+    SetLength(arr, length(arr)+1);
+    for i := length(arr)-2 downto index do
+        arr[i+1] := arr[i];
+    arr[index] := arr[index-1];
 end;
 
-/// Вставляет в массив элемент n, который будет стоять на index месте.
-procedure insertIntoArray(var a: array of real; n: real; index: integer);
+/// Вставляет в массив элемент, который стоит на index месте.
+procedure duplicate(var arr: array of real; index: integer);
 var i, l: integer;
 begin
-    SetLength(a, length(a)+1);
-    for i := length(a)-2 downto index do
-        a[i+1] := a[i];
-    a[index] := n;
+    SetLength(arr, length(arr)+1);
+    for i := length(arr)-2 downto index do
+        arr[i+1] := arr[i];
+    arr[index] := arr[index-1];
 end;
 
-/// Вставляет в массив строку s, которая будет стоять на index месте.
-procedure insertIntoArray(var a: array of string; s: string; index: integer);
+/// Вставляет в массив элемент, который стоит на index месте.
+procedure duplicate(var arr: array of string; index: integer);
 var i, l: integer;
 begin
-    SetLength(a, length(a)+1);
-    for i := length(a)-2 downto index do
-        a[i+1] := a[i];
-    a[index] := s;
+    SetLength(arr, length(arr)+1);
+    for i := length(arr)-2 downto index do
+        arr[i+1] := arr[i];
+    arr[index] := arr[index-1];
 end;
 
+/// Вставляет в массив элемент element, который будет стоять на index месте.
+procedure insertIntoArray(var arr: array of integer; element: integer; index: integer);
+var i, l: integer;
+begin
+    SetLength(arr, length(arr)+1);
+    for i := length(arr)-2 downto index do
+        arr[i+1] := arr[i];
+    arr[index] := element;
+end;
+
+/// Вставляет в массив элемент element, который будет стоять на index месте.
+procedure insertIntoArray(var arr: array of real; element: real; index: integer);
+var i, l: integer;
+begin
+    SetLength(arr, length(arr)+1);
+    for i := length(arr)-2 downto index do
+        arr[i+1] := arr[i];
+    arr[index] := element;
+end;
+
+/// Вставляет в массив строку stringElement, которая будет стоять на index месте.
+procedure insertIntoArray(var arr: array of string; stringElement: string; index: integer);
+var i, l: integer;
+begin
+    SetLength(arr, length(arr)+1);
+    for i := length(arr)-2 downto index do
+        arr[i+1] := arr[i];
+    arr[index] := stringElement;
+end;
+
+(*
+/// Уничтожает повторяющиеся элементы массива.
+procedure removeRepeatedElementsInArray(var a: array of integer);
+var b: array of integer;
+    flag: boolean;
+    i,j,M,N: byte;
+begin
+    N := length(a);
+    SetLength(b,n);
+    b[1] := a[1];
+    M := 1;
+    for i:=2 to N do begin
+        flag := true;
+        for j:=1 to M do
+            if a[i] = b[j] then 
+                flag := false;
+        if flag = true then begin
+            M := M + 1;
+            b[M] := a[i];
+        end;
+    end;
+end;
+*)
 
 // Module: Math
 /// Возвращает факториал числа типа BigInteger.
-function factorial(j: Integer): BigInteger;
+function factorial(count: Integer): BigInteger;
 var
   i: integer;
-  f: BigInteger;
+  factorialResult: BigInteger;
 
 begin
-for i := 0 to j do
-begin
-  if (i=0) or (i=1) 
-  then f:=1
-  else f:=f*i;
-end;
-  Result:=f;
+  for i := 0 to count do
+    begin
+      if (i=0) or (i=1) 
+        then factorialResult := 1
+        else factorialResult := factorialResult * i;
+    end;
+  Result := factorialResult;
 end;
 
 /// @Deprecated
 /// Возвращает факториал числа типа Integer. Невозможно определить факториал числа, большего чем 16 этим методом.
-function factorialInt(j: Integer): integer;
+function factorialInt(count: Integer): integer;
 var
-  i,f: integer;
+  i, factorialResult: integer;
 
 begin
-for i := 0 to j do
-begin
-  if (i=0) or (i=1) then
-    f:=1
-      else
-       f:=f*i;
-       end;
-  Result:=f;
+for i := 0 to count do
+  begin
+    if (i=0) or (i=1) 
+      then factorialResult := 1
+      else factorialResult := factorialResult * i;
+     end;
+  Result := factorialResult;
 end;
 
 /// Конвертирует градусы в радианы.
@@ -301,73 +361,74 @@ begin
   angrad := angrad * RADIANS_TO_DEGREES;
 end;
 
-/// Находит корни квадратного уравнения и возвращает в виде параметров m и n, если корни существует, то вернёт true параметром f, иначе вернёт false, если корни не удалось найти.
-procedure findSquaredRoots(a,b,c:real; var m,n:real; f:boolean);
-var d:real;
+/// Находит корни квадратного уравнения и возвращает в виде параметров firstRoot и secondRoot, если корни существует, то вернёт true параметром areRootsExist, иначе вернёт false, если корни не удалось найти.
+procedure findSquaredRoots(a,b,c:real; var firstRoot, secondRoot:real; areRootsExist:boolean);
+var discriminant:real;
 begin
-  f:=true;
-  d:=b*b-4*a*c;
-  if d<0 then f:=false;
-  if (d=0)
+  areRootsExist:=true;
+  discriminant:=b*b-4*a*c;
+  if (discriminant < 0) then areRootsExist:=false;
+  if (discriminant = 0)
     then begin
-    n:=-b/2*a;
-    m:=-b/2*a;
+    secondRoot:=-b/2*a;
+    firstRoot:=-b/2*a;
   end
 end;
 
-/// Находит НОД двух чисел m и n.
-function findGreatestCommonDivider(m,n:integer):integer;
+/// Находит НОД двух чисел firstInt и secondInt.
+function findGreatestCommonDivider(firstInt, secondInt:integer):integer;
   begin
-  while m*n<>0 do
-    if m>n then m:=m mod n
-           else n:=n mod m;
-    if n=0 then Result := m
-           else Result := n;
+  while firstInt*secondInt<>0 do
+    if firstInt>secondInt 
+        then firstInt:=firstInt mod secondInt
+        else secondInt:=secondInt mod firstInt;
+    if secondInt=0 then Result := firstInt
+        else Result := secondInt;
   end;
 
 /// Определяет, является ли число простым. Выводит true, если число простое. Если число не является простым - выводит false.
-function isSimple(N:integer):boolean;
+function isSimple(intValue:integer):boolean;
 var i:integer;
 begin
   Result := true;
-  for i:=2 to n div 2 do
-    if n mod i = 0 then Result := false;
+  for i:=2 to intValue div 2 do
+    if intValue mod i = 0 then Result := false;
 end;
 
-/// Определяет, является ли данное число палиндромом
-function isPalindrome(a: integer):boolean;
-var b,c:integer;
-begin
-b:=a;
-c:=0;
-while b>0 do
- begin
-  c:=c*10+(b mod 10);
-  b:=b div 10;
- end;
- if c=a then Result:=true;
+/// Определяет, является ли данное число палиндромом.
+function isPalindrome(intValue: integer):boolean;
+var reverserWorker1, reverserWorker2:integer;
+  begin
+  reverserWorker1:=intValue;
+  reverserWorker2:=0;
+    while reverserWorker1>0 do
+      begin
+        reverserWorker2 := reverserWorker2 * 10 + (reverserWorker1 mod 10);
+        reverserWorker1 := reverserWorker1 div 10;
+    end;
+  if (reverserWorker2 = intValue) then Result:=true;
 end;
 
 /// Определяет, является ли число n числом Фибоначчи. 
-function isFibonacciNumber(n: integer):boolean;
+function isFibonacciNumber(intValue: integer):boolean;
 var
-  a, b, c, i: integer;
+  fibonacciWorker1, fibonacciWorker2, fibonacciWorker3, i: integer;
 
 begin
-  b := 1;
-  c := b;
-  for i := 1 to trunc(power(n, 2)) do
+  fibonacciWorker2 := 1;
+  fibonacciWorker3 := fibonacciWorker2;
+  for i := 1 to trunc(power(intValue, 2)) do
   begin
-    a := c;
-    c := b;
-    b := a + b;
-    if (n = a) then
+    fibonacciWorker1 := fibonacciWorker3;
+    fibonacciWorker3 := fibonacciWorker2;
+    fibonacciWorker2 := fibonacciWorker1 + fibonacciWorker2;
+    if (intValue = fibonacciWorker1) then
     begin
       Result := true;
-      a := -1;
+      fibonacciWorker1 := -1;
       break;
     end;
-    if (a > n) then
+    if (fibonacciWorker1 > intValue) then
     begin
       Result := false;
       break;
@@ -430,163 +491,169 @@ end;
 
 // Module: String
 /// Проверяет, повторяются ли символы в строке.
-function isRepeatedSymbolsExist(s: string): boolean;
-var i, j, k: integer;
-    c:char;
-    a:array[''..'ࠀ'] of integer;
+function isRepeatedSymbolsExist(stringValue: string): boolean;
+var i, j, counter: integer;
+    currentChar:char;
+    arr:array[''..'ࠀ'] of integer;
 begin
-  for c:='' to 'ࠀ' do
+  for currentChar := '' to 'ࠀ' do
   begin
-    a[c]:=0;
+    arr[currentChar]:=0;
   end;
-  for i:=1 to length(s) do a[s[i]]:=a[s[i]]+1;
-    k:=0;
-  for c:='' to 'ࠀ' do
-    if a[c]>1 then inc(k);
-  if (k <> 0)
+  for i:=1 to length(stringValue) do arr[stringValue[i]]:=arr[stringValue[i]]+1;
+    counter:=0;
+  for currentChar:='' to 'ࠀ' do
+    if (arr[currentChar] > 1) then inc(counter);
+  if (counter <> 0)
     then Result := true
     else Result := false;
 end;
 
 /// Проверяет строку на соблюдение баланса скобочной последовательности. Также определяет, соблюдена ли скобочная последовательность. Если скобочная последовательность соблюдена - возвращает true, иначе - false.
-function isBracketsBalanced(s: string): boolean;
+function isBracketsBalanced(stringValue: string): boolean;
 var
-  str: string;
-  i,s1,s2: integer;
-  fl:boolean;
+  i, bracketBalanceWorker1, bracketBalanceWorker2: integer;
+  isBalanced:boolean;
 begin
-  s1:=0; 
-  s2:=0;
+  bracketBalanceWorker1 := 0; 
+  bracketBalanceWorker2 := 0;
   
-  for i:=1 to length(s) do  {}
+  for i := 1 to length(stringValue) do 
   begin
-    if (s[i]='(') or (s[i]='{') or (s[i]='[') or (s[i]='<') then s1:=s1+1;
-    if (s[i]=')') or (s[i]='}') or (s[i]=']') or (s[i]='>') then s2:=s2+1;
-    if s2 > s1 then fl:=true;
+    if (stringValue[i]='(') or (stringValue[i]='{') or (stringValue[i]='[') or (stringValue[i]='<') then inc(bracketBalanceWorker1);
+    if (stringValue[i]=')') or (stringValue[i]='}') or (stringValue[i]=']') or (stringValue[i]='>') then inc(bracketBalanceWorker2);
+    if (bracketBalanceWorker2 > bracketBalanceWorker1) then isBalanced := true;
   end;
   
-  if (s1=s2) and (fl=false) 
+  if (bracketBalanceWorker1 = bracketBalanceWorker1) and (isBalanced = false) 
     then Result := true
     else Result := false;
 end;
 
 // Module: Array Sorters
 /// Сортирует все элементы массива по алфавиту, сравнивая только первый символ элемента.
-procedure sortAlphabeticallyByFirstChar(unsortedArray: array of String);
+procedure sortAlphabeticallyByFirstChar(var unsortedArray: array of String);
 var
-  i, j, n: integer;
+  i, j, lengthChecker: integer;
   s: string[20];
   arr: array of String;
 begin
-  for i:= 1 to unsortedArray.Length-1 do
+  for i := 1 to unsortedArray.Length-1 do
   begin
     if (unsortedArray[i] <> '')
-      then inc(n);
+      then inc(lengthChecker);
   end;
-  for i:=1 to N-1 do
-        for j:=1 to N-i do
+  for i:=1 to lengthChecker-1 do
+        for j:=1 to lengthChecker-i do
             if unsortedArray[j][1] > unsortedArray[j+1][1]
             then begin
+                { 
+                // TODO: Recheck the swap condition in case swap breaks when sorting an array.
                 s := unsortedArray[j];
                 unsortedArray[j] := unsortedArray[j+1];
                 unsortedArray[j+1] := s;
+                }
+                swap(unsortedArray[j], unsortedArray[j+1]);
             end;
 end;
 
 /// Сортирует все элементы массива по алфавиту.
-procedure sortAlphabetically(unsortedArray: array of String);
+procedure sortAlphabetically(var unsortedArray: array of String);
 var
-  i, j, n: integer;
+  i, j, lengthChecker: integer;
   s: string;
 begin
   for i:= 1 to unsortedArray.Length-1 do
   begin
     if (unsortedArray[i] <> '')
-      then inc(n);
+      then inc(lengthChecker);
   end;
-  for i:=n-1 downto 1 do
+  for i:=lengthChecker-1 downto 1 do
     for j:=1 to i-1 do
       if unsortedArray[j] > unsortedArray[j+1]
             then begin
+                {
                 s := unsortedArray[j];
                 unsortedArray[j] := unsortedArray[j+1];
                 unsortedArray[j+1] := s;
+                }
+                swap(unsortedArray[j], unsortedArray[j+1]);
             end;
 end;
 
 /// Сортирует все элементы в параметре типа String по алфавиту.
-procedure sortAlphabeticallyInElement(var s: string);
+procedure sortAlphabeticallyInElement(var stringValue: string);
 var
-  i,j,n:integer;
-  c: char;
+  i, j, len:integer;
+  currentChar: char;
 begin
-  n := length(s);
-  for i:=n downto 1 do
+  len := length(stringValue);
+  for i:=len downto 1 do
     for j:=1 to i-1 do
-      if (s[j] > s[j+1])
+      if (stringValue[j] > stringValue[j+1])
            then begin
-                c := s[j];
-                s[j] := s[j+1];
-                s[j+1] := c;
+                currentChar := stringValue[j];
+                stringValue[j] := stringValue[j+1];
+                stringValue[j+1] := currentChar;
             end;
-        write(s, ' ');
+        write(stringValue, ' ');
 end;
 
 // Module: Unused
-// Этот модуль не рекомендуется к использованию.
+// Этот модуль не рекомендуется к использованию. Используется в основном только для написания программ из школьного курса по языку Pascal. По умолчанию все методы и функции имеют тег @Deprecated.
 
 /// @Deprecated
 /// Сдвигает все гласные буквы в строке влево, а согласные - вправо.
-procedure moveLetters(s: string);
+procedure moveLetters(stringValue: string);
 var
-  i,j,n:integer;
-  c: char;
+  i, j, len:integer;
+  currentChar: char;
 begin
-  n := length(s);
-  for i:=n downto 1 do
+  len := length(stringValue);
+  for i:=len downto 1 do
     for j:=1 to i-1 do
-      if (pos(s[j], FastPascal.glasn_RU) = 0) and (pos(s[j+1], FastPascal.glasn_RU) > 0) or (pos(s[j], FastPascal.glasn_EN) = 0) and (pos(s[j+1], FastPascal.glasn_EN) > 0)
+      if (pos(stringValue[j], FastPascal.glasn_RU) = 0) and (pos(stringValue[j+1], FastPascal.glasn_RU) > 0) or 
+         (pos(stringValue[j], FastPascal.glasn_EN) = 0) and (pos(stringValue[j+1], FastPascal.glasn_EN) > 0)
            then begin
-                c := s[j];
-                s[j] := s[j+1];
-                s[j+1] := c;
+                currentChar := stringValue[j];
+                stringValue[j] := stringValue[j+1];
+                stringValue[j+1] := currentChar;
             end;
-        write(s, ' ');
+        write(stringValue, ' ');
 end;
 
 /// @Deprecated
 /// Переворачивает строку задом наперёд.
-procedure reverseLetters(s: string);
+procedure reverseLetters(stringValue: string);
 var
-  i,j,n:integer;
-  c: char;
+  i, j, len:integer;
+  currentChar: char;
 begin
-  n := length(s);
-  for i:=n downto 1 do
+  len := length(stringValue);
+  for i:=len downto 1 do
     for j:=1 to i-1 do
             begin
-                c := s[j];
-                s[j] := s[j+1];
-                s[j+1] := c;
+                currentChar := stringValue[j];
+                stringValue[j] := stringValue[j+1];
+                stringValue[j+1] := currentChar;
             end;
-        write(s, ' ');
+        write(stringValue, ' ');
 end;
 
 /// @Deprecated
 /// Выводит строку, содержащую хотя бы 2 совпадающих буквы.
-procedure writeWordWithTwoLetters(var s: string);
+procedure writeWordWithTwoLetters(var stringValue: string);
 var
-  i,j,n:integer;
-  c: char;
+  i, j, len:integer;
   flag: boolean;
 begin
   flag := false;
-  n := length(s);
-  for i:=1 to n do begin
+  len := length(stringValue);
+  for i:=1 to len do begin
     for j:=1 to i-1 do
-      if (ord(s[i]) = ord(s[j])) and (flag = false)
+      if (ord(stringValue[i]) = ord(stringValue[j])) and (flag = false)
            then 
-             begin write(s, ' ');
+             begin write(stringValue, ' ');
                    flag:=true; end;
              end;
 end;
