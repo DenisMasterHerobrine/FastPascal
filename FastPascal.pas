@@ -5,8 +5,6 @@
 // @author Denis Kalashnikov (DenisMasterHerobrine)
 // https://github.com/DenisMasterHerobrine/FastPascal
 
-// TODO: Скобочная последовательность, с учётом <(>) (?)
-
 const CC: string[16] = '0123456789ABCDEF';
 
 var DELIMITER: string := ' ';
@@ -292,29 +290,97 @@ begin
     arr[index] := stringElement;
 end;
 
-(*
 /// Уничтожает повторяющиеся элементы массива.
-procedure removeRepeatedElementsInArray(var a: array of integer);
-var b: array of integer;
+procedure removeRepeatedElementsInArray(var arr: array of integer);
+var arrCleared: array of integer;
     flag: boolean;
-    i,j,M,N: byte;
+    i, j, clearedIterator, len, count: integer;
 begin
-    N := length(a);
-    SetLength(b,n);
-    b[1] := a[1];
-    M := 1;
-    for i:=2 to N do begin
+    len := length(arr);
+    SetLength(arrCleared, len);
+    arrCleared[1] := arr[1];
+    clearedIterator := 1;
+    for i:=2 to len-1 do begin
         flag := true;
-        for j:=1 to M do
-            if a[i] = b[j] then 
+        for j:=1 to clearedIterator do
+            if arr[i] = arrCleared[j] then 
                 flag := false;
         if flag = true then begin
-            M := M + 1;
-            b[M] := a[i];
+            clearedIterator := clearedIterator + 1;
+            arrCleared[clearedIterator] := arr[i];
         end;
     end;
+    arr:=arrCleared;
+    for i:=1 to length(arr)-1 do
+    begin
+      if (arr[i] = 0)
+        then inc(count);
+    end;
+    setLength(arr, len-count);
 end;
-*)
+
+/// Уничтожает повторяющиеся элементы массива.
+procedure removeRepeatedElementsInArray(var arr: array of real);
+var arrCleared: array of real;
+    flag: boolean;
+    i, j, clearedIterator, len, count: integer;
+begin
+    len := length(arr);
+    SetLength(arrCleared, len);
+    arrCleared[1] := arr[1];
+    clearedIterator := 1;
+    for i:=2 to len-1 do begin
+        flag := true;
+        for j:=1 to clearedIterator do
+            if arr[i] = arrCleared[j] then 
+                flag := false;
+        if flag = true then begin
+            clearedIterator := clearedIterator + 1;
+            arrCleared[clearedIterator] := arr[i];
+        end;
+    end;
+    arr:=arrCleared;
+    for i:=1 to length(arr)-1 do
+    begin
+      if (arr[i] = 0)
+        then inc(count);
+    end;
+    setLength(arr, len-count);
+end;
+
+/// Уничтожает повторяющиеся элементы массива.
+procedure removeRepeatedElementsInArray(var arr: array of string);
+var arrCleared: array of string;
+    flag: boolean;
+    i, j, clearedIterator, len, count: integer;
+begin
+    len := length(arr);
+    SetLength(arrCleared, len);
+    arrCleared[1] := arr[0];
+    clearedIterator := 1;
+    for i:=2 to len-1 do begin
+        flag := true;
+        for j:=1 to clearedIterator do
+            if arr[i] = arrCleared[j] then 
+                flag := false;
+        if flag = true then begin
+            clearedIterator := clearedIterator + 1;
+            arrCleared[clearedIterator] := arr[i];
+        end;
+    end;
+    arr:=arrCleared;
+    for i:=1 to length(arr)-1 do
+    begin
+      if (arr[i] = '')
+        then inc(count);
+    end;
+    setLength(arr, len-count);
+    for i:=1 to length(arr)-1 do
+    begin
+      arr[i-1]:=arr[i]
+    end;
+    setLength(arr, len-count-1);
+end;
 
 // Module: Math
 /// Возвращает факториал числа типа BigInteger.
@@ -458,6 +524,25 @@ begin
   Result:=txt.ReadToEnd;
 end;
 
+	/// Считывает файл с диска в кодировке encoding до конца файла. Выводит содержимое файла типа string.
+function readText(filePath: string): text;
+var
+  txt: Text;
+begin
+  assignFile(txt, filePath);
+  reset(txt);
+  Result:=txt;
+end;
+/// Считывает файл с диска в кодировке encoding до конца файла. Выводит содержимое файла типа string.
+function readText(filePath: string; encoding: System.Text.Encoding): text;
+var
+  txt: Text;
+begin
+  assignFile(txt, filePath);
+  reset(txt, encoding);
+  Result:=txt;
+end;
+
 /// Удаляет один или несколько типов символов из строки uncleanedString, находящиеся в параметре remove типа String. Возвращает массив, состоящий из комбинаций строк, состоящих из символов, которые были не удалены и разделены пробелом в unclearedString. 
 function clean(uncleanedString, remove: string): CleanedArrayOutput;
 var
@@ -487,6 +572,36 @@ begin
   end;
   Result.CleanedArray := cleaned;
   Result.Length := n;
+end;
+
+/// Превращает строку, содержащую одно или несколько слов или сочетание символов, разделённых через пробел в массив с этими словами или сочетаниями символов.
+function stringToArray(uncleanedString: string): array of string;
+var
+  cleaned: array of string;
+  i, n: integer;
+begin
+  uncleanedString:=uncleanedString+' ';
+  setLength(cleaned, mediumArrSize);
+  
+  for i:= 1 to length(uncleanedString) do
+  begin
+    if (pos(uncleanedString[i], '') > 0)
+      then uncleanedString[i] := ' ';
+  end;
+  while pos('  ', uncleanedString) > 0 do
+  begin
+    delete(uncleanedString, pos('  ', uncleanedString), 1)
+  end;
+  if (uncleanedString[1] = ' ')
+    then delete(uncleanedString, 1, 1);
+  n:=0;
+  while (uncleanedString <> '') do
+  begin
+    n:=n+1;
+    cleaned[n]:=copy(uncleanedString, 1, pos(' ', uncleanedString)-1);
+    delete(uncleanedString, 1, pos(' ', uncleanedString));
+  end;
+  Result := cleaned;
 end;
 
 // Module: String
