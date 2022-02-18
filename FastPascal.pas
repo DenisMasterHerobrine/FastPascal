@@ -37,12 +37,12 @@ type IntHugeArray = array [1..hugeArrSize] of integer;
 type IntExtremeArray = array [1..extremeArrSize] of integer;
 type IntUltimateArray = array of integer;
 
-type LongTinyArray = array [1..tinyArrSize] of longint;
-type LongSmallArray = array [1..smallArrSize] of longint;
-type LongMediumArray = array [1..mediumArrSize] of longint;
-type LongHugeArray = array [1..hugeArrSize] of longint;
-type LongExtremeArray = array [1..extremeArrSize] of longint;
-type LongUltimateArray = array of longint;
+type LongTinyArray = array [1..tinyArrSize] of BigInteger;
+type LongSmallArray = array [1..smallArrSize] of BigInteger;
+type LongMediumArray = array [1..mediumArrSize] of BigInteger;
+type LongHugeArray = array [1..hugeArrSize] of BigInteger;
+type LongExtremeArray = array [1..extremeArrSize] of BigInteger;
+type LongUltimateArray = array of BigInteger;
 
 type StrTinyArray = array [1..tinyArrSize] of string;
 type StrSmallArray = array [1..smallArrSize] of string;
