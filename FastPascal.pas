@@ -524,7 +524,7 @@ begin
   Result:=txt.ReadToEnd;
 end;
 
-	/// Считывает файл с диска в кодировке encoding до конца файла. Выводит содержимое файла типа string.
+/// Считывает файл с диска в кодировке encoding до конца файла. Выводит содержимое файла типа text с возможностью считывать построчно.
 function readText(filePath: string): text;
 var
   txt: Text;
@@ -533,7 +533,8 @@ begin
   reset(txt);
   Result:=txt;
 end;
-/// Считывает файл с диска в кодировке encoding до конца файла. Выводит содержимое файла типа string.
+
+/// Считывает файл с диска в кодировке encoding до конца файла. Выводит содержимое файла типа text с возможностью считывать построчно.
 function readText(filePath: string; encoding: System.Text.Encoding): text;
 var
   txt: Text;
@@ -550,9 +551,9 @@ var
   i, n: integer;
 begin
   uncleanedString:=uncleanedString+' ';
-  setLength(cleaned, mediumArrSize);
+  setLength(cleaned, length(uncleanedString));
   
-  for i:= 1 to length(uncleanedString) do
+  for i:=1 to length(uncleanedString) do
   begin
     if (pos(uncleanedString[i], remove) > 0)
       then uncleanedString[i] := ' ';
@@ -563,7 +564,7 @@ begin
   end;
   if (uncleanedString[1] = ' ')
     then delete(uncleanedString, 1, 1);
-  n:=0;
+  n:=-1;
   while (uncleanedString <> '') do
   begin
     n:=n+1;
