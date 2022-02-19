@@ -8,7 +8,7 @@
 const CC: string[16] = '0123456789ABCDEF';
 
 var DELIMITER: string := ' ';
-    TESTSTRING: string := '/*TEMPLATE_STRING_FOR_TESTING_PURPOSES!!!*/';
+    TESTSTRING: string := '/*TEMPLATE_STRING_FOR_TESTING_PURPOSES!!!*/';  
     EPSILON: real := 0.0000000000001;
     
     // Module: FastMath Library
@@ -58,16 +58,17 @@ type CleanedArrayOutput = record
 
 // Module: Integer
 /// Переводит число из десятичной системы счисления в любую другую, указанную параметром divider и возвращает его типом string.
-function changeNotation(var defaultNumber:integer; divider:integer):string;
+function changeNotation(defaultNumber:integer; divider:integer):string;
 var
   ConvertedToCCValue:string; 
+  defaultNumberStorage: integer;
 begin
-readln(defaultNumber, divider);
-ConvertedToCCValue:='';
-while defaultNumber > 0 do
+defaultNumberStorage := defaultNumber;
+ConvertedToCCValue := '';
+while defaultNumberStorage > 0 do
  begin
-      ConvertedToCCValue := CC[defaultNumber mod divider+1] + ConvertedToCCValue;
-      defaultNumber := defaultNumber div divider;
+      ConvertedToCCValue := CC[defaultNumberStorage mod divider+1] + ConvertedToCCValue;
+      defaultNumberStorage := defaultNumberStorage div divider;
  end;
  Result := ConvertedToCCValue;
 end;
