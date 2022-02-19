@@ -58,9 +58,9 @@ type CleanedArrayOutput = record
 
 // Module: Integer
 /// Переводит число из десятичной системы счисления в любую другую, указанную параметром divider и возвращает его типом string.
-function changeNotation(defaultNumber:integer; divider:integer):string;
+function changeNotation(defaultNumber:integer; divider:integer): string;
 var
-  ConvertedToCCValue:string; 
+  ConvertedToCCValue: string; 
   defaultNumberStorage: integer;
 begin
 defaultNumberStorage := defaultNumber;
@@ -82,8 +82,17 @@ begin
     arr[i] := Random(-maxint+1, maxint-1);
 end;
 
-/// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где n - количество чисел в массиве, min - минимальное значение сгенерированного числа, max - максимальное значение сгенерированного числа.
+/// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где count - количество чисел в массиве, min - минимальное значение сгенерированного числа, max - максимальное значение сгенерированного числа.
 procedure fillArray(var arr: IntUltimateArray; count, min, max: integer);
+begin
+  SetLength(arr, count);
+  if (min > -maxint+1) and (min < maxint) and (max < maxint-1) and (max > -maxint+1)
+  then for var i:=1 to count-1 do
+    arr[i] := Random(min, max);
+end;
+
+/// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где count - количество чисел в массиве, min - минимальное значение сгенерированного числа, max - максимальное значение сгенерированного числа.
+procedure fillArray(var arr: array of real; count: integer; min, max: real);
 begin
   SetLength(arr, count);
   if (min > -maxint+1) and (min < maxint) and (max < maxint-1) and (max > -maxint+1)
@@ -97,6 +106,24 @@ begin
   SetLength(arr, element);
   for var i:=1 to element-1 do
     write(arr[i], Delimiter);
+  writeln;
+end;
+
+/// Выводит массив до элемента с номером element.
+procedure writeArray(var arr: array of real; element: integer);
+begin
+  SetLength(arr, element);
+  for var i:=1 to element-1 do
+    write(arr[i], Delimiter);
+  writeln;
+end;
+
+/// Выводит массив до элемента с номером element с округлением до rounding чисел после запятой.
+procedure writeArray(var arr: array of real; element, rounding: integer);
+begin
+  SetLength(arr, element);
+  for var i:=1 to element-1 do
+    write(arr[i]:0:rounding, Delimiter);
   writeln;
 end;
 
