@@ -78,16 +78,16 @@ end;
 procedure fillArray(var arr: IntUltimateArray; count: integer);
 begin
   SetLength(arr, count);
-  for var i:=1 to count-1 do
+  for var i:=0 to count do
     arr[i] := Random(-maxint+1, maxint-1);
 end;
 
 /// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где count - количество чисел в массиве, min - минимальное значение сгенерированного числа, max - максимальное значение сгенерированного числа.
 procedure fillArray(var arr: IntUltimateArray; count, min, max: integer);
 begin
-  SetLength(arr, count);
+  SetLength(arr, count+1);
   if (min > -maxint+1) and (min < maxint) and (max < maxint-1) and (max > -maxint+1)
-  then for var i:=1 to count-1 do
+  then for var i:=0 to count do
     arr[i] := Random(min, max);
 end;
 
@@ -96,7 +96,7 @@ procedure fillArray(var arr: array of real; count: integer; min, max: real);
 begin
   SetLength(arr, count);
   if (min > -maxint+1) and (min < maxint) and (max < maxint-1) and (max > -maxint+1)
-  then for var i:=1 to count-1 do
+  then for var i:=0 to count-1 do
     arr[i] := Random(min, max);
 end;
 
@@ -104,7 +104,7 @@ end;
 procedure writeArray(var arr: IntUltimateArray; index: integer);
 begin
   SetLength(arr, index);
-  for var i:=1 to index-1 do
+  for var i:=0 to index-1 do
     write(arr[i], Delimiter);
   writeln;
 end;
@@ -113,7 +113,7 @@ end;
 procedure writeArray(var arr: array of real; index: integer);
 begin
   SetLength(arr, index);
-  for var i:=1 to index-1 do
+  for var i:=0 to index-1 do
     write(arr[i], Delimiter);
   writeln;
 end;
@@ -122,7 +122,7 @@ end;
 procedure writeArray(var arr: array of real; index, rounding: integer);
 begin
   SetLength(arr, index);
-  for var i:=1 to index-1 do
+  for var i:=0 to index-1 do
     write(arr[i]:0:rounding, Delimiter);
   writeln;
 end;
@@ -142,61 +142,61 @@ function findMaxInArray(var arr: IntUltimateArray): integer;
 begin
   SetLength(arr, length(arr));
   Result := arr[1];
-  for var i:=1 to length(arr)-1 do
+  for var i:=0 to length(arr)-1 do
     if Result < arr[i] then 
       Result := arr[i];
 end;
 
-/// Находит сумму всех чисел в массиве типа BigInteger.
+/// Находит сумму всех чисел в массиве типа integer.
 function sumInt(var arr: IntUltimateArray): integer;
 var altarr: integer;
 begin
-  for var i:=1 to length(arr)-1 do
+  for var i:=0 to length(arr)-1 do
     altarr := altarr + arr[i];
   Result := altarr;
 end;
 
-/// Находит сумму count чисел в массиве типа BigInteger.
+/// Находит сумму count чисел в массиве типа integer.
 function sumInt(var arr: IntUltimateArray; count: integer): integer;
 var altarr: integer;
 begin
-  for var i:=1 to count-1 do
+  for var i:=0 to count-1 do
     altarr := altarr + arr[i];
   Result := altarr;
 end;
 
 /// Находит сумму всех чисел в массиве типа BigInteger.
-function sum(var arr: IntUltimateArray): BigInteger;
+function sum(var arr: array of BigInteger): BigInteger;
 var altarr: BigInteger;
 begin
-  for var i:=1 to length(arr)-1 do
+  for var i:=0 to length(arr)-1 do
     altarr := altarr + arr[i];
   Result := altarr;
 end;
 
 /// Находит сумму count чисел в массиве типа BigInteger.
-function sum(var arr: IntUltimateArray; count: integer): BigInteger;
+function sum(var arr: array of BigInteger; count: integer): BigInteger;
 var altarr: BigInteger;
 begin
-  for var i:=1 to count-1 do
+  for var i:=0 to count-1 do
     altarr := altarr + arr[i];
   Result := altarr;
 end;
 
-/// Находит сумму всех чисел в массиве типа BigInteger.
-function sumRealInt(var arr: array of real): real;
+/// Находит сумму всех чисел в массиве типа real.
+function sumReal(var arr: array of real): real;
 var altarr: real;
 begin
-  for var i:=1 to length(arr)-1 do
+  for var i:=0 to length(arr)-1 do
     altarr := altarr + arr[i];
   Result := altarr;
 end;
 
-/// Находит сумму count чисел в массиве типа BigInteger.
-function sumRealInt(var arr: array of real; count: integer): real;
+/// Находит сумму count чисел в массиве типа real.
+function sumReal(var arr: array of real; count: integer): real;
 var altarr: real;
 begin
-  for var i:=1 to count-1 do
+  for var i:=0 to count-1 do
     altarr := altarr + arr[i];
   Result := altarr;
 end;
