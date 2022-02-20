@@ -202,6 +202,32 @@ begin
 end;
 
 /// Выводит арифметическую прогрессию из count чисел, с шагом step и первым членом прогрессии firstElement.
+procedure printArithmeticProgression(count: integer; firstElement: integer; step: real);
+var i:integer;
+    arr:array of real;
+begin
+  SetLength(arr, count);
+  arr[0] := firstElement;
+  for i:=1 to count-1 do
+    arr[i] := arr[i-1] + step;
+  for i:=0 to count-1 do
+    write(arr[i],' ');
+end;
+
+/// Выводит арифметическую прогрессию из count чисел, с шагом step и первым членом прогрессии firstElement.
+procedure printArithmeticProgression(count: integer; firstElement: real; step: integer);
+var i:integer;
+    arr:array of real;
+begin
+  SetLength(arr, count);
+  arr[0] := firstElement;
+  for i:=1 to count-1 do
+    arr[i] := arr[i-1] + step;
+  for i:=0 to count-1 do
+    write(arr[i],' ');
+end;
+
+/// Выводит арифметическую прогрессию из count чисел, с шагом step и первым членом прогрессии firstElement.
 procedure printArithmeticProgression(count: integer; firstElement, step: real);
 var i:integer;
     arr:array of real;
