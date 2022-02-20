@@ -320,7 +320,7 @@ begin
     end;
 end;
 
-/// Вставляет в массив элемент n, который будет стоять на index месте.
+/// Дублирует в массиве элемент n, который стоял на index месте.
 procedure duplicate(var arr: array of integer; index: integer);
 var i, l: integer;
 begin
@@ -330,7 +330,7 @@ begin
     arr[index] := arr[index-1];
 end;
 
-/// Вставляет в массив элемент, который стоит на index месте.
+/// Дублирует в массиве элемент n, который стоял на index месте.
 procedure duplicate(var arr: array of real; index: integer);
 var i, l: integer;
 begin
@@ -340,7 +340,7 @@ begin
     arr[index] := arr[index-1];
 end;
 
-/// Вставляет в массив элемент, который стоит на index месте.
+/// Дублирует в массиве элемент n, который стоял на index месте.
 procedure duplicate(var arr: array of string; index: integer);
 var i, l: integer;
 begin
