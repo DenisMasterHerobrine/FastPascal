@@ -100,29 +100,29 @@ begin
     arr[i] := Random(min, max);
 end;
 
-/// Выводит массив до элемента с номером element.
-procedure writeArray(var arr: IntUltimateArray; element: integer);
+/// Выводит массив до элемента с номером index.
+procedure writeArray(var arr: IntUltimateArray; index: integer);
 begin
-  SetLength(arr, element);
-  for var i:=1 to element-1 do
+  SetLength(arr, index);
+  for var i:=1 to index-1 do
     write(arr[i], Delimiter);
   writeln;
 end;
 
-/// Выводит массив до элемента с номером element.
-procedure writeArray(var arr: array of real; element: integer);
+/// Выводит массив до элемента с номером index.
+procedure writeArray(var arr: array of real; index: integer);
 begin
-  SetLength(arr, element);
-  for var i:=1 to element-1 do
+  SetLength(arr, index);
+  for var i:=1 to index-1 do
     write(arr[i], Delimiter);
   writeln;
 end;
 
-/// Выводит массив до элемента с номером element с округлением до rounding чисел после запятой.
-procedure writeArray(var arr: array of real; element, rounding: integer);
+/// Выводит массив до элемента с номером index с округлением до rounding чисел после запятой.
+procedure writeArray(var arr: array of real; index, rounding: integer);
 begin
-  SetLength(arr, element);
-  for var i:=1 to element-1 do
+  SetLength(arr, index);
+  for var i:=1 to index-1 do
     write(arr[i]:0:rounding, Delimiter);
   writeln;
 end;
@@ -132,7 +132,7 @@ function findMinInArray(var arr: IntUltimateArray): integer;
 begin
   SetLength(arr, length(arr));
   Result := arr[1];
-  for var i:=1 to length(arr) do
+  for var i:=1 to length(arr)-1 do
     if Result > arr[i] then 
       Result := arr[i];
 end;
@@ -142,9 +142,27 @@ function findMaxInArray(var arr: IntUltimateArray): integer;
 begin
   SetLength(arr, length(arr));
   Result := arr[1];
-  for var i:=1 to length(arr) do
+  for var i:=1 to length(arr)-1 do
     if Result < arr[i] then 
       Result := arr[i];
+end;
+
+/// Находит сумму всех чисел в массиве типа BigInteger.
+function sumInt(var arr: IntUltimateArray): integer;
+var altarr: integer;
+begin
+  for var i:=1 to length(arr)-1 do
+    altarr := altarr + arr[i];
+  Result := altarr;
+end;
+
+/// Находит сумму count чисел в массиве типа BigInteger.
+function sumInt(var arr: IntUltimateArray; count: integer): integer;
+var altarr: integer;
+begin
+  for var i:=1 to count-1 do
+    altarr := altarr + arr[i];
+  Result := altarr;
 end;
 
 /// Находит сумму всех чисел в массиве типа BigInteger.
@@ -159,6 +177,24 @@ end;
 /// Находит сумму count чисел в массиве типа BigInteger.
 function sum(var arr: IntUltimateArray; count: integer): BigInteger;
 var altarr: BigInteger;
+begin
+  for var i:=1 to count-1 do
+    altarr := altarr + arr[i];
+  Result := altarr;
+end;
+
+/// Находит сумму всех чисел в массиве типа BigInteger.
+function sumRealInt(var arr: array of real): real;
+var altarr: real;
+begin
+  for var i:=1 to length(arr)-1 do
+    altarr := altarr + arr[i];
+  Result := altarr;
+end;
+
+/// Находит сумму count чисел в массиве типа BigInteger.
+function sumRealInt(var arr: array of real; count: integer): real;
+var altarr: real;
 begin
   for var i:=1 to count-1 do
     altarr := altarr + arr[i];
