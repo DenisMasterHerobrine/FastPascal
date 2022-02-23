@@ -494,7 +494,7 @@ var
   i, factorialResult: integer;
 
 begin
-Assert(count <= 16, 'Число, факториал которого необходимо найти, должно быть меньше или равно 16. Используйте FastPascal.factorial(count) вместо этого метода!');
+assert(count <= 16, 'Число, факториал которого необходимо найти, должно быть меньше или равно 16. Используйте FastPascal.factorial(count) вместо этого метода!');
 for i := 0 to count do
   begin
     if (i=0) or (i=1) 
@@ -505,29 +505,67 @@ for i := 0 to count do
 end;
 
 /// Конвертирует градусы в радианы.
-procedure toRadians(var angdeg: real);
+function toRadians(angdeg: integer): real;
 begin
-  angdeg := angdeg * DEGREES_TO_RADIANS;
+  Result := angdeg * DEGREES_TO_RADIANS;
+end;
+
+/// Конвертирует градусы в радианы.
+function toRadians(angdeg: real): real;
+begin
+  Result := angdeg * DEGREES_TO_RADIANS;
 end;
 
 /// Конвертирует радианы в градусы.
-procedure toDegrees(var angrad: real);
+function toDegrees(angrad: integer): real;
 begin
-  angrad := angrad * RADIANS_TO_DEGREES;
+  Result := angrad * RADIANS_TO_DEGREES;
+end;
+
+/// Конвертирует радианы в градусы.
+function toDegrees(angrad: real): real;
+begin
+  Result := angrad * RADIANS_TO_DEGREES;
 end;
 
 /// Находит корни квадратного уравнения и возвращает в виде параметров firstRoot и secondRoot, если корни существует, то вернёт true параметром areRootsExist, иначе вернёт false, если корни не удалось найти.
-procedure findSquaredRoots(a,b,c:real; var firstRoot, secondRoot:real; areRootsExist:boolean);
+procedure findSquaredRoots(a,b,c: integer; var firstRoot, secondRoot:real; var areRootsExist: boolean);
 var discriminant:real;
 begin
-  areRootsExist:=true;
-  discriminant:=b*b-4*a*c;
+  discriminant:=(b*b)-(4*a*c);
   if (discriminant < 0) then areRootsExist:=false;
   if (discriminant = 0)
     then begin
-    secondRoot:=-b/2*a;
-    firstRoot:=-b/2*a;
-  end
+    secondRoot := (-b)/(2*a);
+    firstRoot := (-b)/(2*a);
+    areRootsExist:=true;
+  end;
+  if (discriminant > 0)
+    then begin
+    secondRoot := (-b+sqrt(discriminant))/(2*a);
+    firstRoot := (-b-sqrt(discriminant))/(2*a);
+    areRootsExist:=true;
+  end;
+end;
+
+/// Находит корни квадратного уравнения и возвращает в виде параметров firstRoot и secondRoot, если корни существует, то вернёт true параметром areRootsExist, иначе вернёт false, если корни не удалось найти.
+procedure findSquaredRoots(a,b,c: real; var firstRoot, secondRoot:real; var areRootsExist: boolean);
+var discriminant:real;
+begin
+  discriminant:=(b*b)-(4*a*c);
+  if (discriminant < 0) then areRootsExist:=false;
+  if (discriminant = 0)
+    then begin
+    secondRoot := (-b)/(2*a);
+    firstRoot := (-b)/(2*a);
+    areRootsExist:=true;
+  end;
+  if (discriminant > 0)
+    then begin
+    secondRoot := (-b+sqrt(discriminant))/(2*a);
+    firstRoot := (-b-sqrt(discriminant))/(2*a);
+    areRootsExist:=true;
+  end;
 end;
 
 /// Находит НОД двух чисел firstInt и secondInt.
