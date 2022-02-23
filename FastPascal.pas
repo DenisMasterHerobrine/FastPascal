@@ -10,8 +10,6 @@ const CC: string[16] = '0123456789ABCDEF';
 var DELIMITER: string := ' ';
     TESTSTRING: string := '/*TEMPLATE_STRING_FOR_TESTING_PURPOSES!!!*/';  
     EPSILON: real := 0.0000000000001;
-    
-    // Module: FastMath Library
     DEGREES_TO_RADIANS: real := 0.017453292519943295;
     RADIANS_TO_DEGREES: real := 57.29577951308232;
     SQRT2: real := 1.41421356237309;
@@ -496,6 +494,7 @@ var
   i, factorialResult: integer;
 
 begin
+Assert(count <= 16, 'Число, факториал которого необходимо найти, должно быть меньше или равно 16. Используйте FastPascal.factorial(count) вместо этого метода!');
 for i := 0 to count do
   begin
     if (i=0) or (i=1) 
