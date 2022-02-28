@@ -5,6 +5,9 @@
 // @author Denis Kalashnikov (DenisMasterHerobrine)
 // https://github.com/DenisMasterHerobrine/FastPascal
 
+// TODO: isPalindrome() for strings type.
+// TODO: Добавить принадлежность точки к площади фигуры.
+
 const CC: string[16] = '0123456789ABCDEF';
 
 var DELIMITER: string := ' ';
@@ -70,6 +73,57 @@ while defaultNumberStorage > 0 do
  end;
  Result := ConvertedToCCValue;
 end;
+
+/// Определяет, является ли число простым. Выводит true, если число простое. Если число не является простым - выводит false.
+function isSimple(intValue:integer):boolean;
+var i:integer;
+begin
+  Result := true;
+  for i:=2 to intValue div 2 do
+    if intValue mod i = 0 then Result := false;
+end;
+
+/// Определяет, является ли данное число палиндромом.
+function isPalindrome(intValue: integer):boolean;
+var reverserWorker1, reverserWorker2:integer;
+  begin
+  reverserWorker1:=intValue;
+  reverserWorker2:=0;
+    while reverserWorker1>0 do
+      begin
+        reverserWorker2 := reverserWorker2 * 10 + (reverserWorker1 mod 10);
+        reverserWorker1 := reverserWorker1 div 10;
+    end;
+  if (reverserWorker2 = intValue) then Result:=true;
+end;
+
+/// Определяет, является ли число n числом Фибоначчи. 
+function isFibonacciNumber(intValue: integer):boolean;
+var
+  fibonacciWorker1, fibonacciWorker2, fibonacciWorker3, i: integer;
+
+begin
+  fibonacciWorker2 := 1;
+  fibonacciWorker3 := fibonacciWorker2;
+  for i := 1 to trunc(power(intValue, 2)) do
+  begin
+    fibonacciWorker1 := fibonacciWorker3;
+    fibonacciWorker3 := fibonacciWorker2;
+    fibonacciWorker2 := fibonacciWorker1 + fibonacciWorker2;
+    if (intValue = fibonacciWorker1) then
+    begin
+      Result := true;
+      fibonacciWorker1 := -1;
+      break;
+    end;
+    if (fibonacciWorker1 > intValue) then
+    begin
+      Result := false;
+      break;
+    end;
+  end;
+end;
+
 
 // Module: Arrays
 /// Заполняет массив случайными числами в Integer диапазоне. [-2,147,483,647 ~ 2,147,483,647], где count - количество чисел в массиве.
@@ -569,7 +623,7 @@ begin
 end;
 
 /// Находит НОД двух чисел firstInt и secondInt.
-function findGreatestCommonDivider(firstInt, secondInt:integer):integer;
+function findGreatestCommonDivider(firstInt, secondInt: integer):integer;
   begin
   while firstInt*secondInt<>0 do
     if firstInt>secondInt 
@@ -578,57 +632,7 @@ function findGreatestCommonDivider(firstInt, secondInt:integer):integer;
     if secondInt=0 then Result := firstInt
         else Result := secondInt;
   end;
-
-/// Определяет, является ли число простым. Выводит true, если число простое. Если число не является простым - выводит false.
-function isSimple(intValue:integer):boolean;
-var i:integer;
-begin
-  Result := true;
-  for i:=2 to intValue div 2 do
-    if intValue mod i = 0 then Result := false;
-end;
-
-/// Определяет, является ли данное число палиндромом.
-function isPalindrome(intValue: integer):boolean;
-var reverserWorker1, reverserWorker2:integer;
-  begin
-  reverserWorker1:=intValue;
-  reverserWorker2:=0;
-    while reverserWorker1>0 do
-      begin
-        reverserWorker2 := reverserWorker2 * 10 + (reverserWorker1 mod 10);
-        reverserWorker1 := reverserWorker1 div 10;
-    end;
-  if (reverserWorker2 = intValue) then Result:=true;
-end;
-
-/// Определяет, является ли число n числом Фибоначчи. 
-function isFibonacciNumber(intValue: integer):boolean;
-var
-  fibonacciWorker1, fibonacciWorker2, fibonacciWorker3, i: integer;
-
-begin
-  fibonacciWorker2 := 1;
-  fibonacciWorker3 := fibonacciWorker2;
-  for i := 1 to trunc(power(intValue, 2)) do
-  begin
-    fibonacciWorker1 := fibonacciWorker3;
-    fibonacciWorker3 := fibonacciWorker2;
-    fibonacciWorker2 := fibonacciWorker1 + fibonacciWorker2;
-    if (intValue = fibonacciWorker1) then
-    begin
-      Result := true;
-      fibonacciWorker1 := -1;
-      break;
-    end;
-    if (fibonacciWorker1 > intValue) then
-    begin
-      Result := false;
-      break;
-    end;
-  end;
-end;
-
+  
 // Module: File
 /// Считывает файл с диска в кодировке UTF-16 до конца файла. Выводит содержимое файла типа string.
 function readFile(filePath: string): string;
@@ -702,7 +706,7 @@ begin
   Result.Length := n;
 end;
 
-/// Превращает строку, содержащую одно или несколько слов или сочетание символов, разделённых через пробел в массив с этими словами или сочетаниями символов.
+/// Преобразует строку, содержащую одно или несколько слов или сочетание символов, разделённых через пробел в массив с этими словами или сочетаниями символов.
 function stringToArray(uncleanedString: string): array of string;
 var
   cleaned: array of string;
@@ -740,6 +744,25 @@ var i, j, counter: integer;
     arr:array[''..'ࠀ'] of integer;
 begin
   for currentChar := '' to 'ࠀ' do
+  begin
+    arr[currentChar]:=0;
+  end;
+  for i:=1 to length(stringValue) do arr[stringValue[i]]:=arr[stringValue[i]]+1;
+    counter:=0;
+  for currentChar:='' to 'ࠀ' do
+    if (arr[currentChar] > 1) then inc(counter);
+  if (counter <> 0)
+    then Result := true
+    else Result := false;
+end;
+
+/// Проверяет, повторяются ли символы в строке. Использует последний существующий символ современной таблицы Unicode. Работает только на Windows 10/11.
+function isRepeatedSymbolsExistExt(stringValue: string): boolean;
+var i, j, counter: integer;
+    currentChar:char;
+    arr:array[''..''] of integer;
+begin
+  for currentChar := '' to '' do
   begin
     arr[currentChar]:=0;
   end;
@@ -790,12 +813,6 @@ begin
         for j:=1 to lengthChecker-i do
             if unsortedArray[j][1] > unsortedArray[j+1][1]
             then begin
-                { 
-                // TODO: Recheck the swap condition in case swap breaks when sorting an array.
-                s := unsortedArray[j];
-                unsortedArray[j] := unsortedArray[j+1];
-                unsortedArray[j+1] := s;
-                }
                 swap(unsortedArray[j], unsortedArray[j+1]);
             end;
 end;
@@ -815,11 +832,6 @@ begin
     for j:=1 to i-1 do
       if unsortedArray[j] > unsortedArray[j+1]
             then begin
-                {
-                s := unsortedArray[j];
-                unsortedArray[j] := unsortedArray[j+1];
-                unsortedArray[j+1] := s;
-                }
                 swap(unsortedArray[j], unsortedArray[j+1]);
             end;
 end;
