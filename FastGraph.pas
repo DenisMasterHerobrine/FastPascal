@@ -49,20 +49,20 @@ var
     line(318,y*40,322,y*40);
   end;
 
-/// Создаёт на экране GraphABC.NET декартовую систему координат цветом color
-procedure drawCoordinateSystem(color: System.Drawing.Color);
+/// Создаёт на экране GraphABC.NET декартовую систему координат цветом color.
+procedure drawCoordinateSystem(var color: System.Drawing.Color);
 var
   x: integer;
   y: integer;
   
   begin
   // Base
-  GraphABC.Line(0,240,640,240, FastGraph.Black);
-  GraphABC.Line(320,0,320,480, FastGraph.Black);
-  GraphABC.Line(640,240,635,235, FastGraph.Black);
-  GraphABC.Line(640,240,635,245, FastGraph.Black);
-  GraphABC.Line(320,0,325,5, FastGraph.Black);
-  GraphABC.Line(320,0,315,5, FastGraph.Black);
+  GraphABC.Line(0,240,640,240, color);
+  GraphABC.Line(320,0,320,480, color);
+  GraphABC.Line(640,240,635,235, color);
+  GraphABC.Line(640,240,635,245, color);
+  GraphABC.Line(320,0,325,5, color);
+  GraphABC.Line(320,0,315,5, color);
   
   GraphABC.TextOut(630,250,'x');
   GraphABC.TextOut(325,10,'y');
