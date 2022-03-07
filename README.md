@@ -1,21 +1,24 @@
 ![https://github.com/DenisMasterHerobrine/FastPascal](https://img.shields.io/github/license/DenisMasterHerobrine/FastPascal) 
 ![https://github.com/DenisMasterHerobrine/FastPascal](https://img.shields.io/github/issues/denismasterherobrine/FastPascal)
 <div align="center"> <h1> FastPascal & FastGraph</h1> </div>
-<div align="center"> FastPascal is a PascalABC.NET unit method library which adds methods available in other programming languages such as Java/Python/C++ and some utilities to do Pascal stuff. Originally started as a school project.</div>
+<div align="center"> Данная библиотека подразумевает собой набор методов, функций и процедур написанных на языке Pascal, которые значительно упрощают алгоритмы программ, которые создаются в основном в школьном курсе информатики, но могут быть также полезны где-то ещё. Применение найти можете сами.</div>
 
-# Information
-There are several modules in FastPascal such as:
-- Arrays: allows to do specific stuff with arrays and its elements such as sorting or moving elements of the array.
-- Math: allows to do specific calculations while Pascal not adds such procedures or functions.
-- Array Sorters: allows to sort elements in the array with an ability to sort alphabetically or other methods.
-- (WIP) SolverAPI: Solves different mathematical problems with very high accuracy.
-- Unused: Specific program algorithms that may or may not work as intended and written only for specific school tasks. Probably will be removed on release.
+# Информация
+В библиотеке присутствуют различные модули:
+- Unified Constants & Types (Унифицированные константы и типы)
+- Integer
+- Arrays
+- Math
+- File
+- String
+- Array Sorters
+- ~~Unused~~
+- GraphAPI (графический модуль библиотеки FastPascal)
+- - GraphAPI Color Map Library (палитра цветов, которой нет в изначальных IDE)
 
-There are also some modules in FastGraph such as:
-- GraphAPI: This API allows to generate graphics of some simple mathematical functions and drawing beautiful things for whatever reason. 
+# Примеры? Документация?
+ - Ветка "master" содержит папку Examples и задокументированные .pas и .pcu файлы.
+ - Если же вам нехватает информации про тот или иной метод или функцию/процедуру в библиотеке - [также существует документация по библиотеке на GitBook](https://denismasterherobrine.gitbook.io/fastpascal).
 
-# Examples? Documentation?
- - "master" branch contains Examples folder and full .pcu and .pas documented library files.
- - FastPascal Wiki is WIP as of now. Will be released when it is released.
-
-Written on Pascal. Licensed under MIT.
+Написано на языке Pascal (.NET реализация). FPMake пакет написан на C и Object Pascal.
+Залицензировано под лицензией MIT License. Подробнее [здесь.](https://github.com/DenisMasterHerobrine/FastPascal/blob/master/LICENSE) (на английском языке)
