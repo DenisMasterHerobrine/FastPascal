@@ -5,9 +5,6 @@
 // @author Denis Kalashnikov (DenisMasterHerobrine)
 // https://github.com/DenisMasterHerobrine/FastPascal
 
-// TODO: isPalindrome() for strings type.
-// TODO: Добавить принадлежность точки к площади фигуры.
-
 const CC: string[16] = '0123456789ABCDEF';
 
 var DELIMITER: string := ' ';
@@ -75,7 +72,7 @@ while defaultNumberStorage > 0 do
 end;
 
 /// Определяет, является ли число простым. Выводит true, если число простое. Если число не является простым - выводит false.
-function isSimple(intValue:integer):boolean;
+function isSimple(intValue:integer): boolean;
 var i:integer;
 begin
   Result := true;
@@ -84,7 +81,7 @@ begin
 end;
 
 /// Определяет, является ли данное число палиндромом.
-function isPalindrome(intValue: integer):boolean;
+function isPalindrome(intValue: integer): boolean;
 var reverserWorker1, reverserWorker2:integer;
   begin
   reverserWorker1:=intValue;
@@ -95,6 +92,22 @@ var reverserWorker1, reverserWorker2:integer;
         reverserWorker1 := reverserWorker1 div 10;
     end;
   if (reverserWorker2 = intValue) then Result:=true;
+end;
+
+/// Определяет, является ли данное число палиндромом.
+function isPalindrome(stringValue: string): boolean;
+var i, j, counter: integer;
+  begin
+  i:=1;
+  j:=length(stringValue);
+    while i < j do
+    begin
+      if stringValue[i]=stringValue[j]
+        then inc(counter);
+      inc(i);
+      dec(j);
+    end;
+  if (counter = length(stringValue) div 2) then Result:=true;
 end;
 
 /// Определяет, является ли число n числом Фибоначчи. 

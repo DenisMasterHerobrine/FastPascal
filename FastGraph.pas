@@ -6,8 +6,6 @@ uses FastPascal, GraphABC;
 // @author Denis Kalashnikov (DenisMasterHerobrine)
 // https://github.com/DenisMasterHerobrine/FastPascal
 
-// TODO: Графики функций со встраиваемой функцией и системой координат.
-
 var
     // Module: GraphAPI Color Map Library
     Red: System.Drawing.Color := rgb(163, 11, 3);
@@ -22,11 +20,12 @@ var
     Black: System.Drawing.Color := rgb(0, 0, 0);
 
 // Module: GraphAPI
+// Основной модуль для работы FastPascal в среде GraphABC.
 
 /// Создаёт на экране GraphABC.NET декартовую систему координат.
 procedure drawCoordinateSystem();
 var
-  x: integer;
+  x: integer; 
   y: integer;
   
   begin
@@ -237,28 +236,7 @@ function f(x:real):real;
     then lineto(x,round(240-40*f((x-320)/40)), color)
     else moveto(x,round(240-40*f((x-320)/40)));
   end;
-
-// TODO: Add a proper implementation of this.
-/// Рисует график произвольной функции. Выводит значение функции в параметр F. В параметрах drawFunction() указать саму функцию. Например, если необходимо начертить график функции y=sin(x) - укажите "sin(x)".
-procedure drawFunction(logicalParameter: real; color: System.Drawing.Color);
-var
-  x: integer;
-function f(x:real):real;
-  begin
-    Result:=logicalParameter;
-  end;
   
-  begin
-  // Move function location
-  moveto(0,round(240-40*f((x-320)/40)));
-  
-  // Draw the function.
-  for x:=1 to 640 do
-    if (round(240-40*f((x-320)/40)) > 0)
-    then lineto(x,round(240-40*f((x-320)/40)), color)
-    else moveto(x,round(240-40*f((x-320)/40)));
-  end;
-
 // fix: Empty Body of a library unit to compile it easily.
 begin
 end.
